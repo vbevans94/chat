@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="tomcat-jdbc-8.0.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/tomcat-jdbc-8.0.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/tomcat-jdbc-8.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

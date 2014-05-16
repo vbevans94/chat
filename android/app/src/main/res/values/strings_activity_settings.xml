@@ -1,0 +1,12 @@
+<resources>
+        <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+    <string name="pref_header_server">Server</string>
+
+    <string name="pref_title_port">Port</string>
+    <string name="pref_default_port">5000</string>
+
+    <string name="pref_title_ip">Server IP</string>
+    <string name="pref_default_ip">127.0.0.1</string>
+</resources>

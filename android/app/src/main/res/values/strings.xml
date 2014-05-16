@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Chat</string>
+    <string name="hint_enter_name">Enter name</string>
+    <string name="hint_enter_password">Enter password</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_register">Register</string>
+    <string name="message_welcome">Welcome in chat, buddy!</string>
+    <string name="title_confirm">Confirmation</string>
+    <string name="error_enter_name">Please, enter a name</string>
+    <string name="error_enter_password">Please, enter a password</string>
+
+</resources>
