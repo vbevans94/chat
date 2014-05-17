@@ -41,11 +41,21 @@ public class Chat {
 
     /**
      * Registers user in the system.
+     * @return newly created user id
      * @throws ChatException when there were validation errors or such user already exists
      * 
      * @param user
      */
-    public void registerUser(User user) throws ChatException, org.apache.thrift.TException;
+    public int registerUser(User user) throws ChatException, org.apache.thrift.TException;
+
+    /**
+     * Logs user in the system.
+     * @return user id
+     * @throws ChatException when there were validation errors or no such user
+     * 
+     * @param user
+     */
+    public int loginUser(User user) throws ChatException, org.apache.thrift.TException;
 
     /**
      * Retrieves all users currently registered in the system.
@@ -71,9 +81,9 @@ public class Chat {
      * @throws ChatException when there is no such user that tries to authenticate.
      * 
      * @param user
-     * @param dialog
+     * @param partner
      */
-    public List<Message> getMessages(User user, Dialog dialog) throws ChatException, org.apache.thrift.TException;
+    public List<Message> getMessages(User user, User partner) throws ChatException, org.apache.thrift.TException;
 
     /**
      * Sends a message in the form of dialog topping where user and a message are set.
@@ -91,11 +101,13 @@ public class Chat {
 
     public void registerUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
+    public void loginUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
     public void getAllUsers(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void getDialogs(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void getMessages(User user, Dialog dialog, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void getMessages(User user, User partner, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void sendMessage(User user, Dialog dialog, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -121,10 +133,10 @@ public class Chat {
       super(iprot, oprot);
     }
 
-    public void registerUser(User user) throws ChatException, org.apache.thrift.TException
+    public int registerUser(User user) throws ChatException, org.apache.thrift.TException
     {
       send_registerUser(user);
-      recv_registerUser();
+      return recv_registerUser();
     }
 
     public void send_registerUser(User user) throws org.apache.thrift.TException
@@ -134,14 +146,43 @@ public class Chat {
       sendBase("registerUser", args);
     }
 
-    public void recv_registerUser() throws ChatException, org.apache.thrift.TException
+    public int recv_registerUser() throws ChatException, org.apache.thrift.TException
     {
       registerUser_result result = new registerUser_result();
       receiveBase(result, "registerUser");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
       if (result.error != null) {
         throw result.error;
       }
-      return;
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "registerUser failed: unknown result");
+    }
+
+    public int loginUser(User user) throws ChatException, org.apache.thrift.TException
+    {
+      send_loginUser(user);
+      return recv_loginUser();
+    }
+
+    public void send_loginUser(User user) throws org.apache.thrift.TException
+    {
+      loginUser_args args = new loginUser_args();
+      args.setUser(user);
+      sendBase("loginUser", args);
+    }
+
+    public int recv_loginUser() throws ChatException, org.apache.thrift.TException
+    {
+      loginUser_result result = new loginUser_result();
+      receiveBase(result, "loginUser");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.error != null) {
+        throw result.error;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "loginUser failed: unknown result");
     }
 
     public List<User> getAllUsers(User user) throws ChatException, org.apache.thrift.TException
@@ -196,17 +237,17 @@ public class Chat {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getDialogs failed: unknown result");
     }
 
-    public List<Message> getMessages(User user, Dialog dialog) throws ChatException, org.apache.thrift.TException
+    public List<Message> getMessages(User user, User partner) throws ChatException, org.apache.thrift.TException
     {
-      send_getMessages(user, dialog);
+      send_getMessages(user, partner);
       return recv_getMessages();
     }
 
-    public void send_getMessages(User user, Dialog dialog) throws org.apache.thrift.TException
+    public void send_getMessages(User user, User partner) throws org.apache.thrift.TException
     {
       getMessages_args args = new getMessages_args();
       args.setUser(user);
-      args.setDialog(dialog);
+      args.setPartner(partner);
       sendBase("getMessages", args);
     }
 
@@ -290,13 +331,45 @@ public class Chat {
         prot.writeMessageEnd();
       }
 
-      public void getResult() throws ChatException, org.apache.thrift.TException {
+      public int getResult() throws ChatException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_registerUser();
+        return (new Client(prot)).recv_registerUser();
+      }
+    }
+
+    public void loginUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      loginUser_call method_call = new loginUser_call(user, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class loginUser_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private User user;
+      public loginUser_call(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.user = user;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("loginUser", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        loginUser_args args = new loginUser_args();
+        args.setUser(user);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public int getResult() throws ChatException, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_loginUser();
       }
     }
 
@@ -364,27 +437,27 @@ public class Chat {
       }
     }
 
-    public void getMessages(User user, Dialog dialog, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void getMessages(User user, User partner, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getMessages_call method_call = new getMessages_call(user, dialog, resultHandler, this, ___protocolFactory, ___transport);
+      getMessages_call method_call = new getMessages_call(user, partner, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getMessages_call extends org.apache.thrift.async.TAsyncMethodCall {
       private User user;
-      private Dialog dialog;
-      public getMessages_call(User user, Dialog dialog, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private User partner;
+      public getMessages_call(User user, User partner, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.user = user;
-        this.dialog = dialog;
+        this.partner = partner;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getMessages", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getMessages_args args = new getMessages_args();
         args.setUser(user);
-        args.setDialog(dialog);
+        args.setPartner(partner);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -448,6 +521,7 @@ public class Chat {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("registerUser", new registerUser());
+      processMap.put("loginUser", new loginUser());
       processMap.put("getAllUsers", new getAllUsers());
       processMap.put("getDialogs", new getDialogs());
       processMap.put("getMessages", new getMessages());
@@ -471,7 +545,33 @@ public class Chat {
       public registerUser_result getResult(I iface, registerUser_args args) throws org.apache.thrift.TException {
         registerUser_result result = new registerUser_result();
         try {
-          iface.registerUser(args.user);
+          result.success = iface.registerUser(args.user);
+          result.setSuccessIsSet(true);
+        } catch (ChatException error) {
+          result.error = error;
+        }
+        return result;
+      }
+    }
+
+    public static class loginUser<I extends Iface> extends org.apache.thrift.ProcessFunction<I, loginUser_args> {
+      public loginUser() {
+        super("loginUser");
+      }
+
+      public loginUser_args getEmptyArgsInstance() {
+        return new loginUser_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public loginUser_result getResult(I iface, loginUser_args args) throws org.apache.thrift.TException {
+        loginUser_result result = new loginUser_result();
+        try {
+          result.success = iface.loginUser(args.user);
+          result.setSuccessIsSet(true);
         } catch (ChatException error) {
           result.error = error;
         }
@@ -543,7 +643,7 @@ public class Chat {
       public getMessages_result getResult(I iface, getMessages_args args) throws org.apache.thrift.TException {
         getMessages_result result = new getMessages_result();
         try {
-          result.success = iface.getMessages(args.user, args.dialog);
+          result.success = iface.getMessages(args.user, args.partner);
         } catch (ChatException error) {
           result.error = error;
         }
@@ -589,6 +689,7 @@ public class Chat {
 
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
       processMap.put("registerUser", new registerUser());
+      processMap.put("loginUser", new loginUser());
       processMap.put("getAllUsers", new getAllUsers());
       processMap.put("getDialogs", new getDialogs());
       processMap.put("getMessages", new getMessages());
@@ -596,7 +697,7 @@ public class Chat {
       return processMap;
     }
 
-    public static class registerUser<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, registerUser_args, Void> {
+    public static class registerUser<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, registerUser_args, Integer> {
       public registerUser() {
         super("registerUser");
       }
@@ -605,11 +706,13 @@ public class Chat {
         return new registerUser_args();
       }
 
-      public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<Integer> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<Void>() { 
-          public void onComplete(Void o) {
+        return new AsyncMethodCallback<Integer>() { 
+          public void onComplete(Integer o) {
             registerUser_result result = new registerUser_result();
+            result.success = o;
+            result.setSuccessIsSet(true);
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
               return;
@@ -647,8 +750,66 @@ public class Chat {
         return false;
       }
 
-      public void start(I iface, registerUser_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
+      public void start(I iface, registerUser_args args, org.apache.thrift.async.AsyncMethodCallback<Integer> resultHandler) throws TException {
         iface.registerUser(args.user,resultHandler);
+      }
+    }
+
+    public static class loginUser<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, loginUser_args, Integer> {
+      public loginUser() {
+        super("loginUser");
+      }
+
+      public loginUser_args getEmptyArgsInstance() {
+        return new loginUser_args();
+      }
+
+      public AsyncMethodCallback<Integer> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<Integer>() { 
+          public void onComplete(Integer o) {
+            loginUser_result result = new loginUser_result();
+            result.success = o;
+            result.setSuccessIsSet(true);
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            loginUser_result result = new loginUser_result();
+            if (e instanceof ChatException) {
+                        result.error = (ChatException) e;
+                        result.setErrorIsSet(true);
+                        msg = result;
+            }
+             else 
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, loginUser_args args, org.apache.thrift.async.AsyncMethodCallback<Integer> resultHandler) throws TException {
+        iface.loginUser(args.user,resultHandler);
       }
     }
 
@@ -819,7 +980,7 @@ public class Chat {
       }
 
       public void start(I iface, getMessages_args args, org.apache.thrift.async.AsyncMethodCallback<List<Message>> resultHandler) throws TException {
-        iface.getMessages(args.user, args.dialog,resultHandler);
+        iface.getMessages(args.user, args.partner,resultHandler);
       }
     }
 
@@ -1244,6 +1405,7 @@ public class Chat {
   public static class registerUser_result implements org.apache.thrift.TBase<registerUser_result, registerUser_result._Fields>, java.io.Serializable, Cloneable, Comparable<registerUser_result>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("registerUser_result");
 
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
     private static final org.apache.thrift.protocol.TField ERROR_FIELD_DESC = new org.apache.thrift.protocol.TField("error", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
@@ -1252,10 +1414,12 @@ public class Chat {
       schemes.put(TupleScheme.class, new registerUser_resultTupleSchemeFactory());
     }
 
+    public int success; // required
     public ChatException error; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
       ERROR((short)1, "error");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -1271,8 +1435,461 @@ public class Chat {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
           case 1: // ERROR
             return ERROR;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __SUCCESS_ISSET_ID = 0;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.ERROR, new org.apache.thrift.meta_data.FieldMetaData("error", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(registerUser_result.class, metaDataMap);
+    }
+
+    public registerUser_result() {
+    }
+
+    public registerUser_result(
+      int success,
+      ChatException error)
+    {
+      this();
+      this.success = success;
+      setSuccessIsSet(true);
+      this.error = error;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public registerUser_result(registerUser_result other) {
+      __isset_bitfield = other.__isset_bitfield;
+      this.success = other.success;
+      if (other.isSetError()) {
+        this.error = new ChatException(other.error);
+      }
+    }
+
+    public registerUser_result deepCopy() {
+      return new registerUser_result(this);
+    }
+
+    @Override
+    public void clear() {
+      setSuccessIsSet(false);
+      this.success = 0;
+      this.error = null;
+    }
+
+    public int getSuccess() {
+      return this.success;
+    }
+
+    public registerUser_result setSuccess(int success) {
+      this.success = success;
+      setSuccessIsSet(true);
+      return this;
+    }
+
+    public void unsetSuccess() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SUCCESS_ISSET_ID);
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return EncodingUtils.testBit(__isset_bitfield, __SUCCESS_ISSET_ID);
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
+    }
+
+    public ChatException getError() {
+      return this.error;
+    }
+
+    public registerUser_result setError(ChatException error) {
+      this.error = error;
+      return this;
+    }
+
+    public void unsetError() {
+      this.error = null;
+    }
+
+    /** Returns true if field error is set (has been assigned a value) and false otherwise */
+    public boolean isSetError() {
+      return this.error != null;
+    }
+
+    public void setErrorIsSet(boolean value) {
+      if (!value) {
+        this.error = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((Integer)value);
+        }
+        break;
+
+      case ERROR:
+        if (value == null) {
+          unsetError();
+        } else {
+          setError((ChatException)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return Integer.valueOf(getSuccess());
+
+      case ERROR:
+        return getError();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case ERROR:
+        return isSetError();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof registerUser_result)
+        return this.equals((registerUser_result)that);
+      return false;
+    }
+
+    public boolean equals(registerUser_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true;
+      boolean that_present_success = true;
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (this.success != that.success)
+          return false;
+      }
+
+      boolean this_present_error = true && this.isSetError();
+      boolean that_present_error = true && that.isSetError();
+      if (this_present_error || that_present_error) {
+        if (!(this_present_error && that_present_error))
+          return false;
+        if (!this.error.equals(that.error))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(registerUser_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetError()).compareTo(other.isSetError());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetError()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.error, other.error);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("registerUser_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      sb.append(this.success);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("error:");
+      if (this.error == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.error);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class registerUser_resultStandardSchemeFactory implements SchemeFactory {
+      public registerUser_resultStandardScheme getScheme() {
+        return new registerUser_resultStandardScheme();
+      }
+    }
+
+    private static class registerUser_resultStandardScheme extends StandardScheme<registerUser_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, registerUser_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.success = iprot.readI32();
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // ERROR
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.error = new ChatException();
+                struct.error.read(iprot);
+                struct.setErrorIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, registerUser_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.isSetSuccess()) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          oprot.writeI32(struct.success);
+          oprot.writeFieldEnd();
+        }
+        if (struct.error != null) {
+          oprot.writeFieldBegin(ERROR_FIELD_DESC);
+          struct.error.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class registerUser_resultTupleSchemeFactory implements SchemeFactory {
+      public registerUser_resultTupleScheme getScheme() {
+        return new registerUser_resultTupleScheme();
+      }
+    }
+
+    private static class registerUser_resultTupleScheme extends TupleScheme<registerUser_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, registerUser_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetError()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          oprot.writeI32(struct.success);
+        }
+        if (struct.isSetError()) {
+          struct.error.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, registerUser_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.success = iprot.readI32();
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.error = new ChatException();
+          struct.error.read(iprot);
+          struct.setErrorIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class loginUser_args implements org.apache.thrift.TBase<loginUser_args, loginUser_args._Fields>, java.io.Serializable, Cloneable, Comparable<loginUser_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("loginUser_args");
+
+    private static final org.apache.thrift.protocol.TField USER_FIELD_DESC = new org.apache.thrift.protocol.TField("user", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new loginUser_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new loginUser_argsTupleSchemeFactory());
+    }
+
+    public User user; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      USER((short)1, "user");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // USER
+            return USER;
           default:
             return null;
         }
@@ -1316,45 +1933,443 @@ public class Chat {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.USER, new org.apache.thrift.meta_data.FieldMetaData("user", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(loginUser_args.class, metaDataMap);
+    }
+
+    public loginUser_args() {
+    }
+
+    public loginUser_args(
+      User user)
+    {
+      this();
+      this.user = user;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public loginUser_args(loginUser_args other) {
+      if (other.isSetUser()) {
+        this.user = new User(other.user);
+      }
+    }
+
+    public loginUser_args deepCopy() {
+      return new loginUser_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.user = null;
+    }
+
+    public User getUser() {
+      return this.user;
+    }
+
+    public loginUser_args setUser(User user) {
+      this.user = user;
+      return this;
+    }
+
+    public void unsetUser() {
+      this.user = null;
+    }
+
+    /** Returns true if field user is set (has been assigned a value) and false otherwise */
+    public boolean isSetUser() {
+      return this.user != null;
+    }
+
+    public void setUserIsSet(boolean value) {
+      if (!value) {
+        this.user = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case USER:
+        if (value == null) {
+          unsetUser();
+        } else {
+          setUser((User)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case USER:
+        return getUser();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case USER:
+        return isSetUser();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof loginUser_args)
+        return this.equals((loginUser_args)that);
+      return false;
+    }
+
+    public boolean equals(loginUser_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_user = true && this.isSetUser();
+      boolean that_present_user = true && that.isSetUser();
+      if (this_present_user || that_present_user) {
+        if (!(this_present_user && that_present_user))
+          return false;
+        if (!this.user.equals(that.user))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(loginUser_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetUser()).compareTo(other.isSetUser());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetUser()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.user, other.user);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("loginUser_args(");
+      boolean first = true;
+
+      sb.append("user:");
+      if (this.user == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.user);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (user != null) {
+        user.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class loginUser_argsStandardSchemeFactory implements SchemeFactory {
+      public loginUser_argsStandardScheme getScheme() {
+        return new loginUser_argsStandardScheme();
+      }
+    }
+
+    private static class loginUser_argsStandardScheme extends StandardScheme<loginUser_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, loginUser_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // USER
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.user = new User();
+                struct.user.read(iprot);
+                struct.setUserIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, loginUser_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.user != null) {
+          oprot.writeFieldBegin(USER_FIELD_DESC);
+          struct.user.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class loginUser_argsTupleSchemeFactory implements SchemeFactory {
+      public loginUser_argsTupleScheme getScheme() {
+        return new loginUser_argsTupleScheme();
+      }
+    }
+
+    private static class loginUser_argsTupleScheme extends TupleScheme<loginUser_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, loginUser_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetUser()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetUser()) {
+          struct.user.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, loginUser_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.user = new User();
+          struct.user.read(iprot);
+          struct.setUserIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class loginUser_result implements org.apache.thrift.TBase<loginUser_result, loginUser_result._Fields>, java.io.Serializable, Cloneable, Comparable<loginUser_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("loginUser_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
+    private static final org.apache.thrift.protocol.TField ERROR_FIELD_DESC = new org.apache.thrift.protocol.TField("error", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new loginUser_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new loginUser_resultTupleSchemeFactory());
+    }
+
+    public int success; // required
+    public ChatException error; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      ERROR((short)1, "error");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // ERROR
+            return ERROR;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __SUCCESS_ISSET_ID = 0;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       tmpMap.put(_Fields.ERROR, new org.apache.thrift.meta_data.FieldMetaData("error", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(registerUser_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(loginUser_result.class, metaDataMap);
     }
 
-    public registerUser_result() {
+    public loginUser_result() {
     }
 
-    public registerUser_result(
+    public loginUser_result(
+      int success,
       ChatException error)
     {
       this();
+      this.success = success;
+      setSuccessIsSet(true);
       this.error = error;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public registerUser_result(registerUser_result other) {
+    public loginUser_result(loginUser_result other) {
+      __isset_bitfield = other.__isset_bitfield;
+      this.success = other.success;
       if (other.isSetError()) {
         this.error = new ChatException(other.error);
       }
     }
 
-    public registerUser_result deepCopy() {
-      return new registerUser_result(this);
+    public loginUser_result deepCopy() {
+      return new loginUser_result(this);
     }
 
     @Override
     public void clear() {
+      setSuccessIsSet(false);
+      this.success = 0;
       this.error = null;
+    }
+
+    public int getSuccess() {
+      return this.success;
+    }
+
+    public loginUser_result setSuccess(int success) {
+      this.success = success;
+      setSuccessIsSet(true);
+      return this;
+    }
+
+    public void unsetSuccess() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SUCCESS_ISSET_ID);
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return EncodingUtils.testBit(__isset_bitfield, __SUCCESS_ISSET_ID);
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
     public ChatException getError() {
       return this.error;
     }
 
-    public registerUser_result setError(ChatException error) {
+    public loginUser_result setError(ChatException error) {
       this.error = error;
       return this;
     }
@@ -1376,6 +2391,14 @@ public class Chat {
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((Integer)value);
+        }
+        break;
+
       case ERROR:
         if (value == null) {
           unsetError();
@@ -1389,6 +2412,9 @@ public class Chat {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case SUCCESS:
+        return Integer.valueOf(getSuccess());
+
       case ERROR:
         return getError();
 
@@ -1403,6 +2429,8 @@ public class Chat {
       }
 
       switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
       case ERROR:
         return isSetError();
       }
@@ -1413,14 +2441,23 @@ public class Chat {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof registerUser_result)
-        return this.equals((registerUser_result)that);
+      if (that instanceof loginUser_result)
+        return this.equals((loginUser_result)that);
       return false;
     }
 
-    public boolean equals(registerUser_result that) {
+    public boolean equals(loginUser_result that) {
       if (that == null)
         return false;
+
+      boolean this_present_success = true;
+      boolean that_present_success = true;
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (this.success != that.success)
+          return false;
+      }
 
       boolean this_present_error = true && this.isSetError();
       boolean that_present_error = true && that.isSetError();
@@ -1440,13 +2477,23 @@ public class Chat {
     }
 
     @Override
-    public int compareTo(registerUser_result other) {
+    public int compareTo(loginUser_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       lastComparison = Boolean.valueOf(isSetError()).compareTo(other.isSetError());
       if (lastComparison != 0) {
         return lastComparison;
@@ -1474,9 +2521,13 @@ public class Chat {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("registerUser_result(");
+      StringBuilder sb = new StringBuilder("loginUser_result(");
       boolean first = true;
 
+      sb.append("success:");
+      sb.append(this.success);
+      first = false;
+      if (!first) sb.append(", ");
       sb.append("error:");
       if (this.error == null) {
         sb.append("null");
@@ -1503,21 +2554,23 @@ public class Chat {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
       }
     }
 
-    private static class registerUser_resultStandardSchemeFactory implements SchemeFactory {
-      public registerUser_resultStandardScheme getScheme() {
-        return new registerUser_resultStandardScheme();
+    private static class loginUser_resultStandardSchemeFactory implements SchemeFactory {
+      public loginUser_resultStandardScheme getScheme() {
+        return new loginUser_resultStandardScheme();
       }
     }
 
-    private static class registerUser_resultStandardScheme extends StandardScheme<registerUser_result> {
+    private static class loginUser_resultStandardScheme extends StandardScheme<loginUser_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, registerUser_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, loginUser_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1527,6 +2580,14 @@ public class Chat {
             break;
           }
           switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.success = iprot.readI32();
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             case 1: // ERROR
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                 struct.error = new ChatException();
@@ -1547,10 +2608,15 @@ public class Chat {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, registerUser_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, loginUser_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.isSetSuccess()) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          oprot.writeI32(struct.success);
+          oprot.writeFieldEnd();
+        }
         if (struct.error != null) {
           oprot.writeFieldBegin(ERROR_FIELD_DESC);
           struct.error.write(oprot);
@@ -1562,32 +2628,42 @@ public class Chat {
 
     }
 
-    private static class registerUser_resultTupleSchemeFactory implements SchemeFactory {
-      public registerUser_resultTupleScheme getScheme() {
-        return new registerUser_resultTupleScheme();
+    private static class loginUser_resultTupleSchemeFactory implements SchemeFactory {
+      public loginUser_resultTupleScheme getScheme() {
+        return new loginUser_resultTupleScheme();
       }
     }
 
-    private static class registerUser_resultTupleScheme extends TupleScheme<registerUser_result> {
+    private static class loginUser_resultTupleScheme extends TupleScheme<loginUser_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, registerUser_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, loginUser_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetError()) {
+        if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetError()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          oprot.writeI32(struct.success);
+        }
         if (struct.isSetError()) {
           struct.error.write(oprot);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, registerUser_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, loginUser_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
+          struct.success = iprot.readI32();
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
           struct.error = new ChatException();
           struct.error.read(iprot);
           struct.setErrorIsSet(true);
@@ -3339,7 +4415,7 @@ public class Chat {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getMessages_args");
 
     private static final org.apache.thrift.protocol.TField USER_FIELD_DESC = new org.apache.thrift.protocol.TField("user", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-    private static final org.apache.thrift.protocol.TField DIALOG_FIELD_DESC = new org.apache.thrift.protocol.TField("dialog", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+    private static final org.apache.thrift.protocol.TField PARTNER_FIELD_DESC = new org.apache.thrift.protocol.TField("partner", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -3348,12 +4424,12 @@ public class Chat {
     }
 
     public User user; // required
-    public Dialog dialog; // required
+    public User partner; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
       USER((short)1, "user"),
-      DIALOG((short)2, "dialog");
+      PARTNER((short)2, "partner");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -3370,8 +4446,8 @@ public class Chat {
         switch(fieldId) {
           case 1: // USER
             return USER;
-          case 2: // DIALOG
-            return DIALOG;
+          case 2: // PARTNER
+            return PARTNER;
           default:
             return null;
         }
@@ -3417,8 +4493,8 @@ public class Chat {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.USER, new org.apache.thrift.meta_data.FieldMetaData("user", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
-      tmpMap.put(_Fields.DIALOG, new org.apache.thrift.meta_data.FieldMetaData("dialog", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Dialog.class)));
+      tmpMap.put(_Fields.PARTNER, new org.apache.thrift.meta_data.FieldMetaData("partner", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getMessages_args.class, metaDataMap);
     }
@@ -3428,11 +4504,11 @@ public class Chat {
 
     public getMessages_args(
       User user,
-      Dialog dialog)
+      User partner)
     {
       this();
       this.user = user;
-      this.dialog = dialog;
+      this.partner = partner;
     }
 
     /**
@@ -3442,8 +4518,8 @@ public class Chat {
       if (other.isSetUser()) {
         this.user = new User(other.user);
       }
-      if (other.isSetDialog()) {
-        this.dialog = new Dialog(other.dialog);
+      if (other.isSetPartner()) {
+        this.partner = new User(other.partner);
       }
     }
 
@@ -3454,7 +4530,7 @@ public class Chat {
     @Override
     public void clear() {
       this.user = null;
-      this.dialog = null;
+      this.partner = null;
     }
 
     public User getUser() {
@@ -3481,27 +4557,27 @@ public class Chat {
       }
     }
 
-    public Dialog getDialog() {
-      return this.dialog;
+    public User getPartner() {
+      return this.partner;
     }
 
-    public getMessages_args setDialog(Dialog dialog) {
-      this.dialog = dialog;
+    public getMessages_args setPartner(User partner) {
+      this.partner = partner;
       return this;
     }
 
-    public void unsetDialog() {
-      this.dialog = null;
+    public void unsetPartner() {
+      this.partner = null;
     }
 
-    /** Returns true if field dialog is set (has been assigned a value) and false otherwise */
-    public boolean isSetDialog() {
-      return this.dialog != null;
+    /** Returns true if field partner is set (has been assigned a value) and false otherwise */
+    public boolean isSetPartner() {
+      return this.partner != null;
     }
 
-    public void setDialogIsSet(boolean value) {
+    public void setPartnerIsSet(boolean value) {
       if (!value) {
-        this.dialog = null;
+        this.partner = null;
       }
     }
 
@@ -3515,11 +4591,11 @@ public class Chat {
         }
         break;
 
-      case DIALOG:
+      case PARTNER:
         if (value == null) {
-          unsetDialog();
+          unsetPartner();
         } else {
-          setDialog((Dialog)value);
+          setPartner((User)value);
         }
         break;
 
@@ -3531,8 +4607,8 @@ public class Chat {
       case USER:
         return getUser();
 
-      case DIALOG:
-        return getDialog();
+      case PARTNER:
+        return getPartner();
 
       }
       throw new IllegalStateException();
@@ -3547,8 +4623,8 @@ public class Chat {
       switch (field) {
       case USER:
         return isSetUser();
-      case DIALOG:
-        return isSetDialog();
+      case PARTNER:
+        return isSetPartner();
       }
       throw new IllegalStateException();
     }
@@ -3575,12 +4651,12 @@ public class Chat {
           return false;
       }
 
-      boolean this_present_dialog = true && this.isSetDialog();
-      boolean that_present_dialog = true && that.isSetDialog();
-      if (this_present_dialog || that_present_dialog) {
-        if (!(this_present_dialog && that_present_dialog))
+      boolean this_present_partner = true && this.isSetPartner();
+      boolean that_present_partner = true && that.isSetPartner();
+      if (this_present_partner || that_present_partner) {
+        if (!(this_present_partner && that_present_partner))
           return false;
-        if (!this.dialog.equals(that.dialog))
+        if (!this.partner.equals(that.partner))
           return false;
       }
 
@@ -3610,12 +4686,12 @@ public class Chat {
           return lastComparison;
         }
       }
-      lastComparison = Boolean.valueOf(isSetDialog()).compareTo(other.isSetDialog());
+      lastComparison = Boolean.valueOf(isSetPartner()).compareTo(other.isSetPartner());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetDialog()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.dialog, other.dialog);
+      if (isSetPartner()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.partner, other.partner);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -3648,11 +4724,11 @@ public class Chat {
       }
       first = false;
       if (!first) sb.append(", ");
-      sb.append("dialog:");
-      if (this.dialog == null) {
+      sb.append("partner:");
+      if (this.partner == null) {
         sb.append("null");
       } else {
-        sb.append(this.dialog);
+        sb.append(this.partner);
       }
       first = false;
       sb.append(")");
@@ -3665,8 +4741,8 @@ public class Chat {
       if (user != null) {
         user.validate();
       }
-      if (dialog != null) {
-        dialog.validate();
+      if (partner != null) {
+        partner.validate();
       }
     }
 
@@ -3713,11 +4789,11 @@ public class Chat {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
-            case 2: // DIALOG
+            case 2: // PARTNER
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.dialog = new Dialog();
-                struct.dialog.read(iprot);
-                struct.setDialogIsSet(true);
+                struct.partner = new User();
+                struct.partner.read(iprot);
+                struct.setPartnerIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -3742,9 +4818,9 @@ public class Chat {
           struct.user.write(oprot);
           oprot.writeFieldEnd();
         }
-        if (struct.dialog != null) {
-          oprot.writeFieldBegin(DIALOG_FIELD_DESC);
-          struct.dialog.write(oprot);
+        if (struct.partner != null) {
+          oprot.writeFieldBegin(PARTNER_FIELD_DESC);
+          struct.partner.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3768,15 +4844,15 @@ public class Chat {
         if (struct.isSetUser()) {
           optionals.set(0);
         }
-        if (struct.isSetDialog()) {
+        if (struct.isSetPartner()) {
           optionals.set(1);
         }
         oprot.writeBitSet(optionals, 2);
         if (struct.isSetUser()) {
           struct.user.write(oprot);
         }
-        if (struct.isSetDialog()) {
-          struct.dialog.write(oprot);
+        if (struct.isSetPartner()) {
+          struct.partner.write(oprot);
         }
       }
 
@@ -3790,9 +4866,9 @@ public class Chat {
           struct.setUserIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.dialog = new Dialog();
-          struct.dialog.read(iprot);
-          struct.setDialogIsSet(true);
+          struct.partner = new User();
+          struct.partner.read(iprot);
+          struct.setPartnerIsSet(true);
         }
       }
     }

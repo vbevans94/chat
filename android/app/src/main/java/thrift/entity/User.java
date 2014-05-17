@@ -35,8 +35,9 @@ import org.slf4j.LoggerFactory;
 public class User implements org.apache.thrift.TBase<User, User._Fields>, java.io.Serializable, Cloneable, Comparable<User> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("User");
 
-  private static final org.apache.thrift.protocol.TField USERNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("username", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField PASSHASH_FIELD_DESC = new org.apache.thrift.protocol.TField("passhash", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField USERNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("username", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField PASSHASH_FIELD_DESC = new org.apache.thrift.protocol.TField("passhash", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -44,13 +45,15 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
     schemes.put(TupleScheme.class, new UserTupleSchemeFactory());
   }
 
+  public int id; // required
   public String username; // required
   public String passhash; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    USERNAME((short)1, "username"),
-    PASSHASH((short)2, "passhash");
+    ID((short)1, "id"),
+    USERNAME((short)2, "username"),
+    PASSHASH((short)3, "passhash");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,9 +68,11 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // USERNAME
+        case 1: // ID
+          return ID;
+        case 2: // USERNAME
           return USERNAME;
-        case 2: // PASSHASH
+        case 3: // PASSHASH
           return PASSHASH;
         default:
           return null;
@@ -109,9 +114,13 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
   }
 
   // isset id assignments
+  private static final int __ID_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.USERNAME, new org.apache.thrift.meta_data.FieldMetaData("username", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PASSHASH, new org.apache.thrift.meta_data.FieldMetaData("passhash", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -124,10 +133,13 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
   }
 
   public User(
+    int id,
     String username,
     String passhash)
   {
     this();
+    this.id = id;
+    setIdIsSet(true);
     this.username = username;
     this.passhash = passhash;
   }
@@ -136,6 +148,8 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
    * Performs a deep copy on <i>other</i>.
    */
   public User(User other) {
+    __isset_bitfield = other.__isset_bitfield;
+    this.id = other.id;
     if (other.isSetUsername()) {
       this.username = other.username;
     }
@@ -150,8 +164,33 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
 
   @Override
   public void clear() {
+    setIdIsSet(false);
+    this.id = 0;
     this.username = null;
     this.passhash = null;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public User setId(int id) {
+    this.id = id;
+    setIdIsSet(true);
+    return this;
+  }
+
+  public void unsetId() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ID_ISSET_ID);
+  }
+
+  /** Returns true if field id is set (has been assigned a value) and false otherwise */
+  public boolean isSetId() {
+    return EncodingUtils.testBit(__isset_bitfield, __ID_ISSET_ID);
+  }
+
+  public void setIdIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ID_ISSET_ID, value);
   }
 
   public String getUsername() {
@@ -204,6 +243,14 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case ID:
+      if (value == null) {
+        unsetId();
+      } else {
+        setId((Integer)value);
+      }
+      break;
+
     case USERNAME:
       if (value == null) {
         unsetUsername();
@@ -225,6 +272,9 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case ID:
+      return Integer.valueOf(getId());
+
     case USERNAME:
       return getUsername();
 
@@ -242,6 +292,8 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
     }
 
     switch (field) {
+    case ID:
+      return isSetId();
     case USERNAME:
       return isSetUsername();
     case PASSHASH:
@@ -262,6 +314,15 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
   public boolean equals(User that) {
     if (that == null)
       return false;
+
+    boolean this_present_id = true;
+    boolean that_present_id = true;
+    if (this_present_id || that_present_id) {
+      if (!(this_present_id && that_present_id))
+        return false;
+      if (this.id != that.id)
+        return false;
+    }
 
     boolean this_present_username = true && this.isSetUsername();
     boolean that_present_username = true && that.isSetUsername();
@@ -297,6 +358,16 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
 
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetId()).compareTo(other.isSetId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, other.id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetUsername()).compareTo(other.isSetUsername());
     if (lastComparison != 0) {
       return lastComparison;
@@ -337,6 +408,10 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
     StringBuilder sb = new StringBuilder("User(");
     boolean first = true;
 
+    sb.append("id:");
+    sb.append(this.id);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("username:");
     if (this.username == null) {
       sb.append("null");
@@ -371,6 +446,8 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -395,7 +472,15 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
           break;
         }
         switch (schemeField.id) {
-          case 1: // USERNAME
+          case 1: // ID
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.id = iprot.readI32();
+              struct.setIdIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 2: // USERNAME
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.username = iprot.readString();
               struct.setUsernameIsSet(true);
@@ -403,7 +488,7 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // PASSHASH
+          case 3: // PASSHASH
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.passhash = iprot.readString();
               struct.setPasshashIsSet(true);
@@ -426,6 +511,9 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(ID_FIELD_DESC);
+      oprot.writeI32(struct.id);
+      oprot.writeFieldEnd();
       if (struct.username != null) {
         oprot.writeFieldBegin(USERNAME_FIELD_DESC);
         oprot.writeString(struct.username);
@@ -454,13 +542,19 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
     public void write(org.apache.thrift.protocol.TProtocol prot, User struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetUsername()) {
+      if (struct.isSetId()) {
         optionals.set(0);
       }
-      if (struct.isSetPasshash()) {
+      if (struct.isSetUsername()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetPasshash()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetId()) {
+        oprot.writeI32(struct.id);
+      }
       if (struct.isSetUsername()) {
         oprot.writeString(struct.username);
       }
@@ -472,12 +566,16 @@ public class User implements org.apache.thrift.TBase<User, User._Fields>, java.i
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, User struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
+        struct.id = iprot.readI32();
+        struct.setIdIsSet(true);
+      }
+      if (incoming.get(1)) {
         struct.username = iprot.readString();
         struct.setUsernameIsSet(true);
       }
-      if (incoming.get(1)) {
+      if (incoming.get(2)) {
         struct.passhash = iprot.readString();
         struct.setPasshashIsSet(true);
       }

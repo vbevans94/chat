@@ -2,14 +2,16 @@ namespace java thrift.entity
 
 struct User
 {
-  1:  string username
-  2:  string passhash
+  1: i32 id
+  2: string username
+  3: string passhash
 }
 
 struct Message 
 {
   1: string data
   2: User author
+  3: string createdAt
 }
 
 struct Dialog
@@ -38,9 +40,17 @@ service Chat
 {
   /**
    * Registers user in the system.
+   * @return newly created user id
    * @throws ChatException when there were validation errors or such user already exists
    */
-  void registerUser(1: User user) throws (1: ChatException error),
+  i32 registerUser(1: User user) throws (1: ChatException error),
+
+  /**
+   * Logs user in the system.
+   * @return user id
+   * @throws ChatException when there were validation errors or no such user
+   */
+  i32 loginUser(1: User user) throws (1: ChatException error),
 
   /**
    * Retrieves all users currently registered in the system.
@@ -56,12 +66,14 @@ service Chat
    */
   list<Dialog> getDialogs(1: User user) throws (1: ChatException error),
 
+  # TODO: here should go only 10 latest messages, and there must be implemented paginating
+
   /**
    * Retrieves all messages in the given dialog.
    * @return list of messages in given dialog
    * @throws ChatException when there is no such user that tries to authenticate.
    */
-  list<Message> getMessages(1: User user, 2: Dialog dialog) throws (1: ChatException error),
+  list<Message> getMessages(1: User user, 2: User partner) throws (1: ChatException error),
 
   /**
    * Sends a message in the form of dialog topping where user and a message are set.

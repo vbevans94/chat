@@ -49,7 +49,7 @@ public class ChatException extends TException implements org.apache.thrift.TBase
 
   /**
    * 
-   * @see thrift.entity.ErrorType
+   * @see ErrorType
    */
   public ErrorType errorType; // required
   public String message; // required
@@ -58,7 +58,7 @@ public class ChatException extends TException implements org.apache.thrift.TBase
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     /**
      * 
-     * @see thrift.entity.ErrorType
+     * @see ErrorType
      */
     ERROR_TYPE((short)1, "errorType"),
     MESSAGE((short)2, "message");
@@ -167,7 +167,7 @@ public class ChatException extends TException implements org.apache.thrift.TBase
 
   /**
    * 
-   * @see thrift.entity.ErrorType
+   * @see ErrorType
    */
   public ErrorType getErrorType() {
     return this.errorType;
@@ -175,7 +175,7 @@ public class ChatException extends TException implements org.apache.thrift.TBase
 
   /**
    * 
-   * @see thrift.entity.ErrorType
+   * @see ErrorType
    */
   public ChatException setErrorType(ErrorType errorType) {
     this.errorType = errorType;

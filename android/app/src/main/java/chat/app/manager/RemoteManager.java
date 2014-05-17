@@ -11,7 +11,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
-import chat.app.ui.SettingsActivity;
+import chat.app.ui.activity.SettingsActivity;
 import thrift.entity.Chat;
 import thrift.entity.ChatException;
 

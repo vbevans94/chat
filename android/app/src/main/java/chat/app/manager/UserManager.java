@@ -3,37 +3,32 @@ package chat.app.manager;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import chat.app.manager.utils.GsonUtils;
 import thrift.entity.User;
 
 public enum UserManager {
 
     INSTANCE;
-
-    public static final String USERNAME = "username";
-    public static final String PASSHASH = "passhash";
+    private static final String USER = "user";
 
     public boolean registered() {
-        return getSavedUser() != null;
+        return LocalStorage.INSTANCE.contains(USER);
     }
 
     public void saveUser(User user) {
-        LocalStorage.INSTANCE.setString(USERNAME, user.getUsername());
-        LocalStorage.INSTANCE.setString(PASSHASH, user.getPasshash());
+        LocalStorage.INSTANCE.setString(USER, GsonUtils.gson().toJson(user));
     }
 
     public User getSavedUser() {
-        if (LocalStorage.INSTANCE.contains(USERNAME)) {
-            String username = LocalStorage.INSTANCE.getString(USERNAME);
-            String passhash = LocalStorage.INSTANCE.getString(PASSHASH);
-            return new User(username, passhash);
+        if (registered()) {
+            return GsonUtils.gson().fromJson(LocalStorage.INSTANCE.getString(USER), User.class);
         } else {
             return null;
         }
     }
 
     public void clearSavedUser() {
-        LocalStorage.INSTANCE.remove(USERNAME);
-        LocalStorage.INSTANCE.remove(PASSHASH);
+        LocalStorage.INSTANCE.remove(USER);
     }
 
     public String md5(String input) {

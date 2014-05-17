@@ -10,5 +10,19 @@
     <string name="title_confirm">Confirmation</string>
     <string name="error_enter_name">Please, enter a name</string>
     <string name="error_enter_password">Please, enter a password</string>
+    <string name="title_activity_dialogs">Dialogs</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_all_users">All users</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="hint_enter_message">Enter message</string>
+    <string name="title_send">Send</string>
+    <string name="error_no_empty_messages">Say NO to sending empty messages</string>
+    <string name="title_all_users">All users</string>
+    <string name="hint_or">Or</string>
+    <string name="title_login">Login</string>
 
 </resources>

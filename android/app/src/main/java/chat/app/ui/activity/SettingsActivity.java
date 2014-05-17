@@ -1,4 +1,4 @@
-package chat.app.ui;
+package chat.app.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;

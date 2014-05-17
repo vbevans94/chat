@@ -37,6 +37,7 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
 
   private static final org.apache.thrift.protocol.TField DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("data", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField AUTHOR_FIELD_DESC = new org.apache.thrift.protocol.TField("author", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+  private static final org.apache.thrift.protocol.TField CREATED_AT_FIELD_DESC = new org.apache.thrift.protocol.TField("createdAt", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -46,11 +47,13 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
 
   public String data; // required
   public User author; // required
+  public String createdAt; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     DATA((short)1, "data"),
-    AUTHOR((short)2, "author");
+    AUTHOR((short)2, "author"),
+    CREATED_AT((short)3, "createdAt");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -69,6 +72,8 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
           return DATA;
         case 2: // AUTHOR
           return AUTHOR;
+        case 3: // CREATED_AT
+          return CREATED_AT;
         default:
           return null;
       }
@@ -116,6 +121,8 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.AUTHOR, new org.apache.thrift.meta_data.FieldMetaData("author", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
+    tmpMap.put(_Fields.CREATED_AT, new org.apache.thrift.meta_data.FieldMetaData("createdAt", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Message.class, metaDataMap);
   }
@@ -125,11 +132,13 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
 
   public Message(
     String data,
-    User author)
+    User author,
+    String createdAt)
   {
     this();
     this.data = data;
     this.author = author;
+    this.createdAt = createdAt;
   }
 
   /**
@@ -142,6 +151,9 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
     if (other.isSetAuthor()) {
       this.author = new User(other.author);
     }
+    if (other.isSetCreatedAt()) {
+      this.createdAt = other.createdAt;
+    }
   }
 
   public Message deepCopy() {
@@ -152,6 +164,7 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
   public void clear() {
     this.data = null;
     this.author = null;
+    this.createdAt = null;
   }
 
   public String getData() {
@@ -202,6 +215,30 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
     }
   }
 
+  public String getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public Message setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  public void unsetCreatedAt() {
+    this.createdAt = null;
+  }
+
+  /** Returns true if field createdAt is set (has been assigned a value) and false otherwise */
+  public boolean isSetCreatedAt() {
+    return this.createdAt != null;
+  }
+
+  public void setCreatedAtIsSet(boolean value) {
+    if (!value) {
+      this.createdAt = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DATA:
@@ -220,6 +257,14 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       }
       break;
 
+    case CREATED_AT:
+      if (value == null) {
+        unsetCreatedAt();
+      } else {
+        setCreatedAt((String)value);
+      }
+      break;
+
     }
   }
 
@@ -230,6 +275,9 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
 
     case AUTHOR:
       return getAuthor();
+
+    case CREATED_AT:
+      return getCreatedAt();
 
     }
     throw new IllegalStateException();
@@ -246,6 +294,8 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       return isSetData();
     case AUTHOR:
       return isSetAuthor();
+    case CREATED_AT:
+      return isSetCreatedAt();
     }
     throw new IllegalStateException();
   }
@@ -278,6 +328,15 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       if (!(this_present_author && that_present_author))
         return false;
       if (!this.author.equals(that.author))
+        return false;
+    }
+
+    boolean this_present_createdAt = true && this.isSetCreatedAt();
+    boolean that_present_createdAt = true && that.isSetCreatedAt();
+    if (this_present_createdAt || that_present_createdAt) {
+      if (!(this_present_createdAt && that_present_createdAt))
+        return false;
+      if (!this.createdAt.equals(that.createdAt))
         return false;
     }
 
@@ -317,6 +376,16 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetCreatedAt()).compareTo(other.isSetCreatedAt());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCreatedAt()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.createdAt, other.createdAt);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -350,6 +419,14 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       sb.append("null");
     } else {
       sb.append(this.author);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("createdAt:");
+    if (this.createdAt == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.createdAt);
     }
     first = false;
     sb.append(")");
@@ -415,6 +492,14 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 3: // CREATED_AT
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.createdAt = iprot.readString();
+              struct.setCreatedAtIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -438,6 +523,11 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       if (struct.author != null) {
         oprot.writeFieldBegin(AUTHOR_FIELD_DESC);
         struct.author.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (struct.createdAt != null) {
+        oprot.writeFieldBegin(CREATED_AT_FIELD_DESC);
+        oprot.writeString(struct.createdAt);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -464,19 +554,25 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
       if (struct.isSetAuthor()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetCreatedAt()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetData()) {
         oprot.writeString(struct.data);
       }
       if (struct.isSetAuthor()) {
         struct.author.write(oprot);
       }
+      if (struct.isSetCreatedAt()) {
+        oprot.writeString(struct.createdAt);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Message struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.data = iprot.readString();
         struct.setDataIsSet(true);
@@ -485,6 +581,10 @@ public class Message implements org.apache.thrift.TBase<Message, Message._Fields
         struct.author = new User();
         struct.author.read(iprot);
         struct.setAuthorIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.createdAt = iprot.readString();
+        struct.setCreatedAtIsSet(true);
       }
     }
   }

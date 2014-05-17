@@ -1,4 +1,4 @@
-package chat.app.ui;
+package chat.app.ui.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
