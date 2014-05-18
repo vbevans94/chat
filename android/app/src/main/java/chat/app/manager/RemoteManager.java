@@ -11,18 +11,23 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import chat.app.ui.activity.SettingsActivity;
 import thrift.entity.Chat;
 import thrift.entity.ChatException;
+import thrift.entity.ErrorType;
 
 public enum RemoteManager {
 
     INSTANCE;
 
     private static final String TAG = RemoteManager.class.getSimpleName();
+    private final List<ExceptionHandler> mExceptionHandlers = new ArrayList<ExceptionHandler>();
 
     public <T> T perform(Context context, RemoteCall<T> remoteCall) throws ChatException{
-        T result = null;
+        T result;
         try {
             String ipPref = SettingsActivity.DEFAULT_IP;
             int portPref = Integer.parseInt(SettingsActivity.DEFAULT_PORT);
@@ -39,11 +44,33 @@ public enum RemoteManager {
             transport.close();
         } catch (TException e) {
             Log.e(TAG, "Exception during remote call.", e);
+            ChatException chatException;
             if (e instanceof ChatException) {
-                throw (ChatException) e;
+                chatException = (ChatException) e;
+            } else {
+                // any of connection errors
+                chatException = new ChatException(ErrorType.SYSTEM_ERROR, "Connection failed");
             }
+            // propagate through exception handlers
+            for (ExceptionHandler handler : mExceptionHandlers) {
+                handler.handleError(chatException);
+            }
+            throw chatException;
         }
         return result;
+    }
+
+    public void addExceptionHandler(ExceptionHandler handler) {
+        mExceptionHandlers.add(handler);
+    }
+
+    public void removeExceptionHandler(ExceptionHandler handler) {
+        mExceptionHandlers.remove(handler);
+    }
+
+    public interface ExceptionHandler {
+
+        void handleError(ChatException e);
     }
 
     public interface RemoteCall<T> {

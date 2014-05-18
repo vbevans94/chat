@@ -26,6 +26,7 @@
             android:id="@+id/image_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:contentDescription="@string/title_send"
             android:src="@drawable/ic_action_send_now" />
     </LinearLayout>

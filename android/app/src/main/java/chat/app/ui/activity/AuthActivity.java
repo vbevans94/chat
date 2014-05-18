@@ -1,15 +1,11 @@
 package chat.app.ui.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.apache.thrift.TException;
-
-import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,7 +18,7 @@ import thrift.entity.Chat;
 import thrift.entity.ChatException;
 import thrift.entity.User;
 
-public class AuthActivity extends ActionBarActivity {
+public class AuthActivity extends BaseActivity {
 
     @InjectView(R.id.edit_name)
     EditText mEditName;
@@ -66,27 +62,26 @@ public class AuthActivity extends ActionBarActivity {
         if (!TextUtils.isEmpty(mEditPassword.getText())) {
             credentials.password = mEditPassword.getText();
         } else {
-            mEditName.setError(getString(R.string.error_enter_password));
+            mEditPassword.setError(getString(R.string.error_enter_password));
         }
         return credentials;
     }
 
-    private void response(ChatException errorMessage) {
-        if (errorMessage != null) {
-            mEditName.setError(errorMessage.getMessage());
+    private void response(ChatException error) {
+        if (error != null) {
+            Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, R.string.message_welcome, Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
-    private static class RegisterTask extends AsyncTask<Credentials, Void, Void> {
+    private static class RegisterTask extends TaskUtils.BaseTask<Credentials, Void, Void> {
 
-        private final WeakReference<AuthActivity> mActivityRef;
         private ChatException mError;
 
         public RegisterTask(AuthActivity activity) {
-            mActivityRef = new WeakReference<AuthActivity>(activity);
+            super(activity);
         }
 
         /**
@@ -109,10 +104,6 @@ public class AuthActivity extends ActionBarActivity {
             return null;
         }
 
-        AuthActivity getActivity() {
-            return mActivityRef.get();
-        }
-
         int makeAuthCall(final User user) throws ChatException{
             return RemoteManager.INSTANCE.perform(getActivity(), new RemoteManager.RemoteCall<Integer>() {
                 @Override
@@ -123,8 +114,10 @@ public class AuthActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(Void param) {
-            final AuthActivity activity = getActivity();
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            final AuthActivity activity = (AuthActivity) getActivity();
             if (activity != null) {
                 activity.response(mError);
             }

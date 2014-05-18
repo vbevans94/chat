@@ -36,11 +36,12 @@ public class ChatHandler implements Chat.Iface {
                     tools.setStatement(tools.getConnection().prepareStatement("insert into users (username, passhash) values (?,?)", Statement.RETURN_GENERATED_KEYS));
                     tools.getPreparedStatement().setString(1, user.getUsername());
                     tools.getPreparedStatement().setString(2, user.getPasshash());
-                    int userId = tools.getPreparedStatement().executeUpdate();
+                    tools.getPreparedStatement().executeUpdate();
+                    tools.setResultSet(tools.getPreparedStatement().getGeneratedKeys());
 
                     String info = String.format("User %s registered!", user.getUsername());
                     LOGGER.info(info);
-                    return userId;
+                    return tools.getResultSet().first() ? (int) tools.getResultSet().getLong(1) : 0;
                 }
             }
         });
@@ -80,10 +81,12 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setInt(1, user.getId());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 List<User> users = new ArrayList<User>();
-                for (tools.getResultSet().first(); tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
-                    int id = tools.getResultSet().getInt(1);
-                    String username = tools.getResultSet().getString(2);
-                    users.add(new User(id, username, null));
+                if (tools.getResultSet().first()) {
+                    for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
+                        int id = tools.getResultSet().getInt(1);
+                        String username = tools.getResultSet().getString(2);
+                        users.add(new User(id, username, null));
+                    }
                 }
                 return users;
             }
@@ -113,27 +116,29 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setInt(2, user.getId());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 List<Dialog> dialogs = new ArrayList<Dialog>();
-                for (tools.getResultSet().first(); tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
-                    Date ltmCreatedAt = tools.getResultSet().getDate(1);
-                    String ltmData = tools.getResultSet().getString(2);
-                    int partnerId = tools.getResultSet().getInt(3);
-                    String partnerUsername = tools.getResultSet().getString(4);
-                    Date lfmCreatedAt = tools.getResultSet().getDate(5);
-                    String lfmData = tools.getResultSet().getString(6);
+                if (tools.getResultSet().first()) {
+                    for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
+                        Date ltmCreatedAt = tools.getResultSet().getDate(1);
+                        String ltmData = tools.getResultSet().getString(2);
+                        int partnerId = tools.getResultSet().getInt(3);
+                        String partnerUsername = tools.getResultSet().getString(4);
+                        Date lfmCreatedAt = tools.getResultSet().getDate(5);
+                        String lfmData = tools.getResultSet().getString(6);
 
-                    User partner = new User(partnerId, partnerUsername, null);
-                    Message lastMessage = new Message();
-                    if (lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
-                        lastMessage.setData(lfmData);
-                        lastMessage.setAuthor(user);
-                        lastMessage.setCreatedAt(lfmCreatedAt.toString());
-                    } else {
-                        lastMessage.setData(ltmData);
-                        lastMessage.setAuthor(partner);
-                        lastMessage.setCreatedAt(ltmCreatedAt.toString());
+                        User partner = new User(partnerId, partnerUsername, null);
+                        Message lastMessage = new Message();
+                        if (lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
+                            lastMessage.setData(lfmData);
+                            lastMessage.setAuthor(user);
+                            lastMessage.setCreatedAt(lfmCreatedAt.toString());
+                        } else {
+                            lastMessage.setData(ltmData);
+                            lastMessage.setAuthor(partner);
+                            lastMessage.setCreatedAt(ltmCreatedAt.toString());
+                        }
+                        Dialog dialog = new Dialog(partner, lastMessage);
+                        dialogs.add(dialog);
                     }
-                    Dialog dialog = new Dialog(partner, lastMessage);
-                    dialogs.add(dialog);
                 }
                 return dialogs;
             }
@@ -156,13 +161,15 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setInt(4, user.getId());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 List<Message> messages = new ArrayList<Message>();
-                for (tools.getResultSet().first(); tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
-                    String createdAt = tools.getResultSet().getDate(1).toString();
-                    String data = tools.getResultSet().getString(2);
-                    int authorId = tools.getResultSet().getInt(3);
+                if (tools.getResultSet().first()) {
+                    for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
+                        String createdAt = tools.getResultSet().getDate(1).toString();
+                        String data = tools.getResultSet().getString(2);
+                        int authorId = tools.getResultSet().getInt(3);
 
-                    User author = authorId == user.getId() ? user : partner;
-                    messages.add(new Message(data, author, createdAt));
+                        User author = authorId == user.getId() ? user : partner;
+                        messages.add(new Message(data, author, createdAt));
+                    }
                 }
                 return messages;
             }

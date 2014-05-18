@@ -57,12 +57,13 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        int type = getItemViewType(position);
         ViewHolder holder;
         if (view != null) {
             holder = (ViewHolder) view.getTag();
         } else {
             int resId = 0;
-            switch (getItemViewType(position)) {
+            switch (type) {
                 case MY_MESSAGE:
                     resId = R.layout.item_message_my;
                     break;
@@ -76,7 +77,9 @@ public class MessagesAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
         }
         Message message = getItem(position);
-        holder.textAuthor.setText(message.getAuthor().getUsername());
+        if (type == HIS_MESSAGE) {
+            holder.textAuthor.setText(message.getAuthor().getUsername());
+        }
         holder.textData.setText(message.getData());
 
         return view;

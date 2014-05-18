@@ -1,9 +1,9 @@
 package chat.app.ui.fragment;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +36,7 @@ import thrift.entity.Dialog;
 import thrift.entity.Message;
 import thrift.entity.User;
 
-public class DialogFragment extends Fragment {
+public class MessagesFragment extends Fragment {
 
     @InjectView(R.id.list_message)
     ListView mListMessages;
@@ -44,8 +44,8 @@ public class DialogFragment extends Fragment {
     @InjectView(R.id.edit_message)
     EditText mEditMessage;
 
-    public static DialogFragment newInstance(Dialog dialog) {
-        DialogFragment fragment = new DialogFragment();
+    public static MessagesFragment newInstance(Dialog dialog) {
+        MessagesFragment fragment = new MessagesFragment();
         fragment.setArguments(BundleUtils.writeToBundle(Dialog.class, dialog));
         return fragment;
     }
@@ -96,12 +96,13 @@ public class DialogFragment extends Fragment {
     @OnClick(R.id.image_send)
     @SuppressWarnings("unused")
     void onSendClicked() {
-        if (TextUtils.isEmpty(mEditMessage.getText()) && UserManager.INSTANCE.registered()) {
+        if (!TextUtils.isEmpty(mEditMessage.getText())) {
             User me = UserManager.INSTANCE.getSavedUser();
             String data = mEditMessage.getText().toString();
             Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
             dialog.setLastMessage(new Message(data, me, null));
             TaskUtils.schedule(new SendMessageTask(this, me), dialog);
+            mEditMessage.setText("");
         } else {
             Toast.makeText(getActivity(), R.string.error_no_empty_messages, Toast.LENGTH_LONG).show();
         }
@@ -126,18 +127,19 @@ public class DialogFragment extends Fragment {
         }
     }
 
-    private static class GetMessagesTask extends AsyncTask<Dialog, Void, List<Message>> {
+    private static class GetMessagesTask extends TaskUtils.BaseTask<Dialog, Void, List<Message>> {
 
-        private final WeakReference<DialogFragment> mFragmentRef;
+        private final WeakReference<MessagesFragment> mFragmentRef;
         protected final User mUser;
         private ChatException mError;
 
-        private GetMessagesTask(DialogFragment fragment, User user) {
-            mFragmentRef = new WeakReference<DialogFragment>(fragment);
+        private GetMessagesTask(MessagesFragment fragment, User user) {
+            super((ActionBarActivity) fragment.getActivity());
+            mFragmentRef = new WeakReference<MessagesFragment>(fragment);
             mUser = user;
         }
 
-        public DialogFragment getFragment() {
+        public MessagesFragment getFragment() {
             return mFragmentRef.get();
         }
 
@@ -173,7 +175,9 @@ public class DialogFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Message> messages) {
-            final DialogFragment fragment = getFragment();
+            super.onPostExecute(messages);
+
+            final MessagesFragment fragment = getFragment();
             if (fragment != null) {
                 if (messages != null) {
                     fragment.mListMessages.setAdapter(new MessagesAdapter(fragment.getActivity(), messages, mUser));
@@ -186,7 +190,7 @@ public class DialogFragment extends Fragment {
 
     private static class SendMessageTask extends GetMessagesTask {
 
-        private SendMessageTask(DialogFragment fragment, User user) {
+        private SendMessageTask(MessagesFragment fragment, User user) {
             super(fragment, user);
         }
 

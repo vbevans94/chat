@@ -4,12 +4,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import chat.app.manager.utils.GsonUtils;
+import thrift.entity.ChatException;
+import thrift.entity.ErrorType;
 import thrift.entity.User;
 
-public enum UserManager {
+public enum UserManager implements RemoteManager.ExceptionHandler {
 
     INSTANCE;
+
     private static final String USER = "user";
+
+    public void init() {
+        RemoteManager.INSTANCE.addExceptionHandler(this);
+    }
 
     public boolean registered() {
         return LocalStorage.INSTANCE.contains(USER);
@@ -29,6 +36,13 @@ public enum UserManager {
 
     public void clearSavedUser() {
         LocalStorage.INSTANCE.remove(USER);
+    }
+
+    @Override
+    public void handleError(ChatException e) {
+        if (e.getErrorType() == ErrorType.NO_SUCH_USER) {
+            clearSavedUser();
+        }
     }
 
     public String md5(String input) {

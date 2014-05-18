@@ -55,23 +55,7 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/chat/server/db/DB.java" line="35" class="chat.server.db.DB" package="chat.server.db">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -84,24 +68,45 @@
       <file leaf-file-name="ChatHandler.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="13" selection-start="3091" selection-end="3091" vertical-scroll-proportion="1.5477707" vertical-offset="0" max-vertical-offset="3888">
+            <state line="156" column="0" selection-start="8261" selection-end="8261" vertical-scroll-proportion="0.33333334" vertical-offset="2472" max-vertical-offset="4014">
               <folding>
-                <element signature="e#602#2003#0" expanded="true" />
-                <element signature="e#1992#1993#0" expanded="true" />
-                <element signature="e#2135#3101#0" expanded="true" />
-                <element signature="e#3271#4182#0" expanded="true" />
-                <element signature="e#3788#3794#0" expanded="true" />
-                <element signature="e#4171#4172#0" expanded="true" />
-                <element signature="e#4353#7373#0" expanded="true" />
-                <element signature="e#5998#6006#0" expanded="true" />
-                <element signature="e#7362#7363#0" expanded="true" />
-                <element signature="e#7566#9005#0" expanded="true" />
-                <element signature="e#8431#8440#0" expanded="true" />
-                <element signature="e#8994#8995#0" expanded="true" />
-                <element signature="e#9199#10214#0" expanded="true" />
-                <element signature="e#10203#10204#0" expanded="true" />
-                <element signature="e#10488#11480#0" expanded="true" />
-                <element signature="e#11469#11470#0" expanded="true" />
+                <element signature="e#602#2145#0" expanded="true" />
+                <element signature="e#2134#2135#0" expanded="true" />
+                <element signature="e#2277#3243#0" expanded="true" />
+                <element signature="e#3232#3233#0" expanded="true" />
+                <element signature="e#3413#4387#0" expanded="true" />
+                <element signature="e#3930#3936#0" expanded="true" />
+                <element signature="e#4376#4377#0" expanded="true" />
+                <element signature="e#4558#7705#0" expanded="true" />
+                <element signature="e#6203#6211#0" expanded="true" />
+                <element signature="e#7694#7695#0" expanded="true" />
+                <element signature="e#7898#9408#0" expanded="true" />
+                <element signature="e#8763#8772#0" expanded="true" />
+                <element signature="e#9397#9398#0" expanded="true" />
+                <element signature="e#9602#10617#0" expanded="true" />
+                <element signature="e#10606#10607#0" expanded="true" />
+                <element signature="e#10891#11883#0" expanded="true" />
+                <element signature="e#11872#11873#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Chat.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="597" column="0" selection-start="25981" selection-end="25981" vertical-scroll-proportion="0.0" vertical-offset="10104" max-vertical-offset="111546">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DB.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="52" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" vertical-offset="707" max-vertical-offset="1080">
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -491,10 +496,11 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -509,7 +515,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32935917" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -568,22 +573,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="79" selection-start="1968" selection-end="1968" vertical-scroll-proportion="0.0" vertical-offset="666" max-vertical-offset="1260">
           <folding>
-            <element signature="e#602#2003#0" expanded="true" />
-            <element signature="e#1992#1993#0" expanded="true" />
-            <element signature="e#2135#3101#0" expanded="true" />
-            <element signature="e#3271#4182#0" expanded="true" />
-            <element signature="e#3788#3794#0" expanded="true" />
-            <element signature="e#4171#4172#0" expanded="true" />
-            <element signature="e#4353#7373#0" expanded="true" />
-            <element signature="e#5998#6006#0" expanded="true" />
-            <element signature="e#7362#7363#0" expanded="true" />
-            <element signature="e#7566#9005#0" expanded="true" />
-            <element signature="e#8431#8440#0" expanded="true" />
-            <element signature="e#8994#8995#0" expanded="true" />
-            <element signature="e#9199#10214#0" expanded="true" />
-            <element signature="e#10203#10204#0" expanded="true" />
-            <element signature="e#10488#11480#0" expanded="true" />
-            <element signature="e#11469#11470#0" expanded="true" />
+            <element signature="e#602#2145#0" expanded="true" />
+            <element signature="e#2134#2135#0" expanded="true" />
+            <element signature="e#2277#3243#0" expanded="true" />
+            <element signature="e#3232#3233#0" expanded="true" />
+            <element signature="e#3413#4387#0" expanded="true" />
+            <element signature="e#3930#3936#0" expanded="true" />
+            <element signature="e#4376#4377#0" expanded="true" />
+            <element signature="e#4558#7705#0" expanded="true" />
+            <element signature="e#6203#6211#0" expanded="true" />
+            <element signature="e#7694#7695#0" expanded="true" />
+            <element signature="e#7898#9408#0" expanded="true" />
+            <element signature="e#8763#8772#0" expanded="true" />
+            <element signature="e#9397#9398#0" expanded="true" />
+            <element signature="e#9602#10617#0" expanded="true" />
+            <element signature="e#10606#10607#0" expanded="true" />
+            <element signature="e#10891#11883#0" expanded="true" />
+            <element signature="e#11872#11873#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -658,11 +664,6 @@
         <state line="6" column="13" selection-start="160" selection-end="160" vertical-scroll-proportion="0.24324325" vertical-offset="0" max-vertical-offset="378" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="39" selection-start="1304" selection-end="1304" vertical-scroll-proportion="0.55282557" vertical-offset="99" max-vertical-offset="92574" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/thrift/entity/ChatException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="42" selection-start="1097" selection-end="1097" vertical-scroll-proportion="-0.8312102" vertical-offset="666" max-vertical-offset="8460" />
@@ -672,15 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="335" column="16" selection-start="9567" selection-end="9567" vertical-scroll-proportion="0.33333334" vertical-offset="5136" max-vertical-offset="8118">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="32" selection-start="1224" selection-end="1224" vertical-scroll-proportion="0.775351" vertical-offset="133" max-vertical-offset="1044">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -761,26 +753,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/libthrift-0.9.1.jar!/org/apache/thrift/server/TThreadPoolServer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="20" selection-start="1109" selection-end="1109" vertical-scroll-proportion="0.35820895" vertical-offset="330" max-vertical-offset="882">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="597" column="0" selection-start="25981" selection-end="25981" vertical-scroll-proportion="0.0" vertical-offset="10104" max-vertical-offset="111546">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/lang/Override.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="18" selection-start="971" selection-end="971" vertical-scroll-proportion="0.613941" vertical-offset="257" max-vertical-offset="630">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/javax/sql/DataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="82" column="13" selection-start="2807" selection-end="2807" vertical-scroll-proportion="0.4772118" vertical-offset="848" max-vertical-offset="1440">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/tomcat-jdbc-8.0.5-sources.jar!/org/apache/tomcat/jdbc/pool/DataSourceProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="39" selection-start="4007" selection-end="4007" vertical-scroll-proportion="0.18333334" vertical-offset="1554" max-vertical-offset="23778">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="52" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" vertical-offset="707" max-vertical-offset="1080">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="13" selection-start="3091" selection-end="3091" vertical-scroll-proportion="1.5477707" vertical-offset="0" max-vertical-offset="3888">
+        <state line="156" column="0" selection-start="8261" selection-end="8261" vertical-scroll-proportion="0.33333334" vertical-offset="2472" max-vertical-offset="4014">
           <folding>
-            <element signature="e#602#2003#0" expanded="true" />
-            <element signature="e#1992#1993#0" expanded="true" />
-            <element signature="e#2135#3101#0" expanded="true" />
-            <element signature="e#3271#4182#0" expanded="true" />
-            <element signature="e#3788#3794#0" expanded="true" />
-            <element signature="e#4171#4172#0" expanded="true" />
-            <element signature="e#4353#7373#0" expanded="true" />
-            <element signature="e#5998#6006#0" expanded="true" />
-            <element signature="e#7362#7363#0" expanded="true" />
-            <element signature="e#7566#9005#0" expanded="true" />
-            <element signature="e#8431#8440#0" expanded="true" />
-            <element signature="e#8994#8995#0" expanded="true" />
-            <element signature="e#9199#10214#0" expanded="true" />
-            <element signature="e#10203#10204#0" expanded="true" />
-            <element signature="e#10488#11480#0" expanded="true" />
-            <element signature="e#11469#11470#0" expanded="true" />
+            <element signature="e#602#2145#0" expanded="true" />
+            <element signature="e#2134#2135#0" expanded="true" />
+            <element signature="e#2277#3243#0" expanded="true" />
+            <element signature="e#3232#3233#0" expanded="true" />
+            <element signature="e#3413#4387#0" expanded="true" />
+            <element signature="e#3930#3936#0" expanded="true" />
+            <element signature="e#4376#4377#0" expanded="true" />
+            <element signature="e#4558#7705#0" expanded="true" />
+            <element signature="e#6203#6211#0" expanded="true" />
+            <element signature="e#7694#7695#0" expanded="true" />
+            <element signature="e#7898#9408#0" expanded="true" />
+            <element signature="e#8763#8772#0" expanded="true" />
+            <element signature="e#9397#9398#0" expanded="true" />
+            <element signature="e#9602#10617#0" expanded="true" />
+            <element signature="e#10606#10607#0" expanded="true" />
+            <element signature="e#10891#11883#0" expanded="true" />
+            <element signature="e#11872#11873#0" expanded="true" />
           </folding>
         </state>
       </provider>

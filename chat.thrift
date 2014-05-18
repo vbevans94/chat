@@ -24,7 +24,8 @@ enum ErrorType
 {
   NO_SUCH_USER = 404,
   USER_ALREADY_EXISTS = 401,
-  INVALID_DATA = 400
+  INVALID_DATA = 400,
+  SYSTEM_ERROR = 500
 }
 
 /**

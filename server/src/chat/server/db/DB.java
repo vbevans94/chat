@@ -10,6 +10,7 @@ public enum DB {
     INSTANCE;
 
     private final PoolProperties properties = new PoolProperties();
+    private final DataSource datasource = new DataSource();
 
     {
         properties.setUrl("jdbc:mysql://localhost:3306/chat");
@@ -30,11 +31,12 @@ public enum DB {
         properties.setMinIdle(10);
         properties.setLogAbandoned(true);
         properties.setRemoveAbandoned(true);
+
+        datasource.setPoolProperties(properties);
     }
 
     public <T, E extends Exception> T run(Query<T, E> query) throws E {
-        DataSource datasource = new DataSource();
-        datasource.setPoolProperties(properties);
+
 
         Tools tools = new Tools();
         T result = null;

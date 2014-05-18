@@ -3,7 +3,6 @@ package chat.app.ui.fragment;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -72,7 +71,7 @@ public class DialogsDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
 
     @InjectView(R.id.list_drawer_dialogs)
-    private ListView mListDialogs;
+    ListView mListDialogs;
 
     private View mFragmentContainerView;
 
@@ -254,7 +253,7 @@ public class DialogsDrawerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mDrawerLayout != null && isDrawerOpen()) {
             // show only global menu
-            inflater.inflate(R.menu.menu_settings, menu);
+            inflater.inflate(R.menu.menu_global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -295,12 +294,13 @@ public class DialogsDrawerFragment extends Fragment {
         void onNoDialogs();
     }
 
-    private static class GetDialogsTask extends AsyncTask<User, Void, List<Dialog>> {
+    private static class GetDialogsTask extends TaskUtils.BaseTask<User, Void, List<Dialog>> {
 
         private final WeakReference<DialogsDrawerFragment> mFragmentRef;
         private ChatException mError;
 
         public GetDialogsTask(DialogsDrawerFragment fragment) {
+            super((ActionBarActivity) fragment.getActivity());
             mFragmentRef = new WeakReference<DialogsDrawerFragment>(fragment);
         }
 
@@ -331,18 +331,21 @@ public class DialogsDrawerFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Dialog> dialogs) {
+            super.onPostExecute(dialogs);
+
             final DialogsDrawerFragment fragment = mFragmentRef.get();
             if (fragment != null && fragment.isAdded()) {
                 if (dialogs != null) {
+                    if (fragment.mUser != null) {
+                        dialogs.add(0, new Dialog(fragment.mUser, new Message()));
+                    }
                     if (dialogs.size() == 0) {
                         // there are no dialogs yet, hence nothing to do here
                         fragment.mCallbacks.onNoDialogs();
                     } else {
-                        if (fragment.mUser != null) {
-                            dialogs.add(0, new Dialog(fragment.mUser, new Message()));
-                        }
                         fragment.mListDialogs.setAdapter(new DialogsAdapter(fragment.getActivity(), dialogs));
                         fragment.mListDialogs.setItemChecked(fragment.mCurrentSelectedPosition, true);
+                        fragment.mDrawerLayout.openDrawer(fragment.mFragmentContainerView);
                     }
                 } else if (mError != null) {
                     Toast.makeText(fragment.getActivity(), mError.getMessage(), Toast.LENGTH_LONG).show();

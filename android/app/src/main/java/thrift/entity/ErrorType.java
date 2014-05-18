@@ -14,7 +14,8 @@ import org.apache.thrift.TEnum;
 public enum ErrorType implements org.apache.thrift.TEnum {
   NO_SUCH_USER(404),
   USER_ALREADY_EXISTS(401),
-  INVALID_DATA(400);
+  INVALID_DATA(400),
+  SYSTEM_ERROR(500);
 
   private final int value;
 
@@ -41,6 +42,8 @@ public enum ErrorType implements org.apache.thrift.TEnum {
         return USER_ALREADY_EXISTS;
       case 400:
         return INVALID_DATA;
+      case 500:
+        return SYSTEM_ERROR;
       default:
         return null;
     }

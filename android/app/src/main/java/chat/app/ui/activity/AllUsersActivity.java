@@ -1,9 +1,7 @@
 package chat.app.ui.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -11,7 +9,6 @@ import android.widget.Toast;
 
 import org.apache.thrift.TException;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -27,7 +24,7 @@ import thrift.entity.Chat;
 import thrift.entity.ChatException;
 import thrift.entity.User;
 
-public class AllUsersActivity extends ActionBarActivity {
+public class AllUsersActivity extends BaseActivity {
 
     @InjectView(R.id.list_users)
     ListView mListUsers;
@@ -43,17 +40,12 @@ public class AllUsersActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-
             case R.id.action_refresh:
                 requestAllUsers();
                 return true;
@@ -84,13 +76,12 @@ public class AllUsersActivity extends ActionBarActivity {
                 .putExtras(BundleUtils.writeToBundle(User.class, user)));
     }
 
-    private static class GetAllUsersTask extends AsyncTask<User, Void, List<User>> {
+    private static class GetAllUsersTask extends TaskUtils.BaseTask<User, Void, List<User>> {
 
-        private final WeakReference<AllUsersActivity> mActivityRef;
         private ChatException mError;
 
         public GetAllUsersTask(AllUsersActivity activity) {
-            mActivityRef = new WeakReference<AllUsersActivity>(activity);
+            super(activity);
         }
 
         /**
@@ -102,7 +93,7 @@ public class AllUsersActivity extends ActionBarActivity {
         protected List<User> doInBackground(User... params) {
             try {
                 final User user = params[0];
-                return RemoteManager.INSTANCE.perform(mActivityRef.get(), new RemoteManager.RemoteCall<List<User>>() {
+                return RemoteManager.INSTANCE.perform(getActivity(), new RemoteManager.RemoteCall<List<User>>() {
                     @Override
                     public List<User> call(Chat.Client client) throws TException {
                         return client.getAllUsers(user);
@@ -116,7 +107,9 @@ public class AllUsersActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(List<User> users) {
-            final AllUsersActivity activity = mActivityRef.get();
+            super.onPostExecute(users);
+
+            final AllUsersActivity activity = (AllUsersActivity) getActivity();
             if (activity != null) {
                 if (users != null) {
                     activity.mListUsers.setAdapter(new UsersAdapter(activity, users));

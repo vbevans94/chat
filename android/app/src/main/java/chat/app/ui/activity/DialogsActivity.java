@@ -4,17 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import chat.app.R;
-import chat.app.manager.UserManager;
-import chat.app.ui.fragment.DialogFragment;
+import chat.app.ui.fragment.MessagesFragment;
 import chat.app.ui.fragment.DialogsDrawerFragment;
 import thrift.entity.Dialog;
 
-public class DialogsActivity extends ActionBarActivity
+public class DialogsActivity extends BaseActivity
         implements DialogsDrawerFragment.DialogCallbacks {
 
     /**
@@ -41,17 +39,13 @@ public class DialogsActivity extends ActionBarActivity
         mDialogsDrawerFragment.setUp(R.id.navigation_drawer
                 , (DrawerLayout) findViewById(R.id.drawer_layout)
                 , getIntent().getExtras());
-
-        if (!UserManager.INSTANCE.registered()) {
-            startActivity(new Intent(this, AuthActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
     }
 
     @Override
     public void onDialogSelected(Dialog dialog) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, DialogFragment.newInstance(dialog))
+                .replace(R.id.container, MessagesFragment.newInstance(dialog))
                 .commit();
     }
 
@@ -78,9 +72,7 @@ public class DialogsActivity extends ActionBarActivity
         if (!mDialogsDrawerFragment.isDrawerOpen()) {
             // when drawer is open, it should decide what to show
             getMenuInflater().inflate(R.menu.menu_dialogs, menu);
-            getMenuInflater().inflate(R.menu.menu_settings, menu);
             restoreActionBar();
-            return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -88,10 +80,6 @@ public class DialogsActivity extends ActionBarActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-
             case R.id.action_all_users:
                 onNoDialogs();
                 break;
