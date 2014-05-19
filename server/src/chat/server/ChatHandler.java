@@ -60,7 +60,7 @@ public class ChatHandler implements Chat.Iface {
                     return tools.getResultSet().getInt(1);
                 } else {
                     // there is user
-                    String error = String.format("Can't login %s: Wrong credentials.", user.toString());
+                    String error = String.format("Can't login %s: Wrong credentials.", user.getUsername());
                     LOGGER.error(error);
 
                     throw new ChatException(ErrorType.USER_ALREADY_EXISTS, error);
@@ -105,15 +105,26 @@ public class ChatHandler implements Chat.Iface {
                         "lfm.created_at, lfm.data from ((select m.created_at, m.data, m.author_id, m.receiver_id " +
                         "from messages m inner join (select author_id, max(created_at) as max_created_at from " +
                         "messages where receiver_id = ? group by author_id) last on (m.author_id = last.author_id) " +
-                        "and m.created_at = last.max_created_at) ltm inner join (select m.created_at, m.data, " +
+                        "and m.created_at = last.max_created_at) ltm left join (select m.created_at, m.data, " +
                         "m.author_id, m.receiver_id, last.username as username from messages m inner join (select " +
                         "receiver_id, max(created_at) as max_created_at, users.username as username from messages, " +
                         "users where users.id = receiver_id and author_id = ? group by receiver_id) last on " +
                         "(m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) lfm on " +
-                        "ltm.author_id = lfm.receiver_id);";
-                tools.setStatement(tools.getConnection().prepareStatement(sql));
+                        "ltm.author_id = lfm.receiver_id) union (select ltm.created_at, ltm.data, ltm.author_id as " +
+                        "partner_id, lfm.username, lfm.created_at, lfm.data from ((select m.created_at, m.data, " +
+                        "m.author_id, m.receiver_id from messages m inner join (select author_id, max(created_at) as " +
+                        "max_created_at from messages where receiver_id = ? group by author_id) last on (m.author_id = " +
+                        "last.author_id) and m.created_at = last.max_created_at) ltm right join (select m.created_at, " +
+                        "m.data, m.author_id, m.receiver_id, last.username as username from messages m inner join " +
+                        "(select receiver_id, max(created_at) as max_created_at, users.username as username from " +
+                        "messages, users where users.id = receiver_id and author_id = ? group by receiver_id) last on " +
+                        "(m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) lfm on " +
+                        "ltm.author_id = lfm.receiver_id));";
+                tools.setStatement(tools.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS));
                 tools.getPreparedStatement().setInt(1, user.getId());
                 tools.getPreparedStatement().setInt(2, user.getId());
+                tools.getPreparedStatement().setInt(3, user.getId());
+                tools.getPreparedStatement().setInt(4, user.getId());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 List<Dialog> dialogs = new ArrayList<Dialog>();
                 if (tools.getResultSet().first()) {
@@ -127,7 +138,7 @@ public class ChatHandler implements Chat.Iface {
 
                         User partner = new User(partnerId, partnerUsername, null);
                         Message lastMessage = new Message();
-                        if (lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
+                        if (ltmCreatedAt == null || lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
                             lastMessage.setData(lfmData);
                             lastMessage.setAuthor(user);
                             lastMessage.setCreatedAt(lfmCreatedAt.toString());

@@ -3,13 +3,12 @@ package chat.app.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import chat.app.R;
-import chat.app.ui.fragment.MessagesFragment;
 import chat.app.ui.fragment.DialogsDrawerFragment;
+import chat.app.ui.fragment.MessagesFragment;
 import thrift.entity.Dialog;
 
 public class DialogsActivity extends BaseActivity
@@ -20,11 +19,6 @@ public class DialogsActivity extends BaseActivity
      */
     private DialogsDrawerFragment mDialogsDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +27,6 @@ public class DialogsActivity extends BaseActivity
 
         mDialogsDrawerFragment = (DialogsDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mDialogsDrawerFragment.setUp(R.id.navigation_drawer
@@ -56,24 +49,10 @@ public class DialogsActivity extends BaseActivity
         finish();
     }
 
-    public void onDialogAttached(Dialog dialog) {
-        mTitle = dialog.getPartner().getUsername();
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mDialogsDrawerFragment.isDrawerOpen()) {
-            // when drawer is open, it should decide what to show
-            getMenuInflater().inflate(R.menu.menu_dialogs, menu);
-            restoreActionBar();
-        }
+        getMenuInflater().inflate(R.menu.menu_global, menu);
+        getMenuInflater().inflate(R.menu.menu_dialogs, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

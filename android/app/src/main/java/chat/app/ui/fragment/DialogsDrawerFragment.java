@@ -12,8 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,13 +124,9 @@ public class DialogsDrawerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (mListDialogs.getAdapter() == null && UserManager.INSTANCE.registered()) {
-            TaskUtils.schedule(new GetDialogsTask(this), UserManager.INSTANCE.getSavedUser());
+        if (mListDialogs.getAdapter() == null) {
+            requestDialogs();
         }
-    }
-
-    public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
     /**
@@ -250,29 +244,15 @@ public class DialogsDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            // show only global menu
-            inflater.inflate(R.menu.menu_global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_refresh) {
+            requestDialogs();
+        }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+    private void requestDialogs() {
+        TaskUtils.schedule(new GetDialogsTask(this), UserManager.INSTANCE.getSavedUser());
     }
 
     private ActionBar getActionBar() {

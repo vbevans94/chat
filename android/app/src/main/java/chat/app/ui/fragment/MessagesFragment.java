@@ -1,6 +1,5 @@
 package chat.app.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -28,7 +27,6 @@ import chat.app.manager.RemoteManager;
 import chat.app.manager.UserManager;
 import chat.app.manager.utils.BundleUtils;
 import chat.app.manager.utils.TaskUtils;
-import chat.app.ui.activity.DialogsActivity;
 import chat.app.ui.adapter.MessagesAdapter;
 import thrift.entity.Chat;
 import thrift.entity.ChatException;
@@ -70,14 +68,6 @@ public class MessagesFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
-        ((DialogsActivity) activity).onDialogAttached(dialog);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_refresh, menu);
 
@@ -86,8 +76,9 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
         if (item.getItemId() == R.id.action_refresh) {
-            requestMessages();
+            requestMessages(dialog);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -112,17 +103,18 @@ public class MessagesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
+        getActivity().setTitle(dialog.getPartner().getUsername());
         if (mListMessages.getAdapter() == null) {
-            requestMessages();
+            requestMessages(dialog);
         }
     }
 
     /**
      * Reloads messages from server if current user is registered.
      */
-    private void requestMessages() {
+    private void requestMessages(Dialog dialog) {
         if (UserManager.INSTANCE.registered()) {
-            Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
             TaskUtils.schedule(new GetMessagesTask(this, UserManager.INSTANCE.getSavedUser()), dialog);
         }
     }
