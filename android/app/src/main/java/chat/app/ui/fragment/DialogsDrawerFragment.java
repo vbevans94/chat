@@ -320,7 +320,7 @@ public class DialogsDrawerFragment extends Fragment {
                         boolean alreadyPresent = false;
                         int position = 0;
                         for (Dialog dialog : dialogs) {
-                            if (fragment.mUser.equals(dialog.getPartner())) {
+                            if (fragment.mUser.getUsername().equals(dialog.getPartner().getUsername())) {
                                 alreadyPresent = true;
                                 break;
                             }

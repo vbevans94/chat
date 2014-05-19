@@ -75,6 +75,7 @@
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-4.3.23" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.0.1" level="project" />
     <orderEntry type="library" exported="" name="libthrift-0.9.1" level="project" />
     <orderEntry type="library" exported="" name="slf4j-simple-1.7.7" level="project" />

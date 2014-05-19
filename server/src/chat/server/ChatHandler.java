@@ -3,11 +3,16 @@ package chat.server;
 import chat.server.db.DB;
 import chat.server.db.Query;
 import chat.server.db.Tools;
+import com.google.android.gcm.server.Constants;
+import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thrift.entity.*;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,9 +22,13 @@ import java.util.List;
 public class ChatHandler implements Chat.Iface {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ChatHandler.class);
+    private static final String MESSAGE_DATA = "message_data";
+    private static final String MESSAGE_AUTHOR = "message_author";
+    private static final String API_KEY = "AIzaSyASbDTp4yHLeywWzC7uW2A2EY7OLI3yRvw";
+    private final Sender sender = new Sender(API_KEY);
 
     @Override
-    public int registerUser(final User user) throws TException {
+    public int registerUser(final User user, final String registerId) throws TException {
         return DB.INSTANCE.run(new Query<Integer, ChatException>() {
             @Override
             public Integer query(Tools tools) throws SQLException, ChatException {
@@ -33,9 +42,15 @@ public class ChatHandler implements Chat.Iface {
 
                     throw new ChatException(ErrorType.USER_ALREADY_EXISTS, error);
                 } else {
-                    tools.setStatement(tools.getConnection().prepareStatement("insert into users (username, passhash) values (?,?)", Statement.RETURN_GENERATED_KEYS));
+                    // get user with given register id and unset it to empty for him
+                    tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = '' where register_id = ?"));
+                    tools.getPreparedStatement().setString(1, registerId);
+                    tools.getPreparedStatement().executeUpdate();
+
+                    tools.setStatement(tools.getConnection().prepareStatement("insert into users (username, passhash, register_id) values (?,?,?)", Statement.RETURN_GENERATED_KEYS));
                     tools.getPreparedStatement().setString(1, user.getUsername());
                     tools.getPreparedStatement().setString(2, user.getPasshash());
+                    tools.getPreparedStatement().setString(3, registerId);
                     tools.getPreparedStatement().executeUpdate();
                     tools.setResultSet(tools.getPreparedStatement().getGeneratedKeys());
 
@@ -48,7 +63,7 @@ public class ChatHandler implements Chat.Iface {
     }
 
     @Override
-    public int loginUser(final User user) throws ChatException, TException {
+    public int loginUser(final User user, final String registerId) throws ChatException, TException {
         return DB.INSTANCE.run(new Query<Integer, ChatException>() {
             @Override
             public Integer query(Tools tools) throws SQLException, ChatException {
@@ -57,6 +72,17 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setString(2, user.getPasshash());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 if (tools.getResultSet().first()) {
+                    // get user with given register id and unset it to empty for him
+                    tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = '' where register_id = ?"));
+                    tools.getPreparedStatement().setString(1, registerId);
+                    tools.getPreparedStatement().executeUpdate();
+
+                    // set register id for currently logged in user
+                    tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = ? where id = ?"));
+                    tools.getPreparedStatement().setString(1, registerId);
+                    tools.getPreparedStatement().setInt(2, user.getId());
+                    tools.getPreparedStatement().executeUpdate();
+
                     return tools.getResultSet().getInt(1);
                 } else {
                     // there is user
@@ -208,6 +234,21 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setString(3, dialog.getLastMessage().getData());
                 tools.getPreparedStatement().executeUpdate();
 
+                // get partner's gcm id to notify him
+                tools.setStatement(tools.getConnection().prepareStatement("select register_id from users where id = ?"));
+                tools.getPreparedStatement().setInt(1, dialog.getPartner().getId());
+                tools.setResultSet(tools.getPreparedStatement().executeQuery());
+                String gcmId = "";
+                if (tools.getResultSet().first()) {
+                    gcmId = tools.getResultSet().getString(1);
+                }
+
+                List<String> receivers = new ArrayList<String>();
+                receivers.add(gcmId);
+                // for partner it's not the same as for me
+                Message message = new Message(dialog.getLastMessage().getData(), user, dialog.getLastMessage().getCreatedAt());
+                notifyReceivers(receivers, message, tools);
+
                 try {
                     return getMessages(user, dialog.getPartner());
                 } catch (TException e) {
@@ -218,6 +259,50 @@ public class ChatHandler implements Chat.Iface {
                 }
             }
         });
+    }
+
+    private void notifyReceivers(List<String> receivers, Message msg, Tools tools) throws SQLException {
+        com.google.android.gcm.server.Message message = new com.google.android.gcm.server.Message.Builder()
+                .addData(MESSAGE_DATA, msg.getData())
+                .addData(MESSAGE_AUTHOR, msg.getAuthor().getUsername())
+                .build();
+        MulticastResult multicastResult;
+        try {
+            multicastResult = sender.send(message, receivers, 5);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            return;
+        }
+        List<Result> results = multicastResult.getResults();
+        int position = 0;
+
+        for (Result result : results) {
+            String regId = receivers.get(position);
+            String messageId = result.getMessageId();
+            if (messageId != null) {
+                LOGGER.info("Successfully sent messageId = " + messageId);
+                String canonicalRegId = result.getCanonicalRegistrationId();
+                if (canonicalRegId != null) {
+                    // same device has more than on registration id:
+                    // update it
+                    tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = ? where register_id = ?"));
+                    tools.getPreparedStatement().setString(1, regId);
+                    tools.getPreparedStatement().setString(2, canonicalRegId);
+                    tools.getPreparedStatement().executeUpdate();
+                }
+            } else {
+                String error = result.getErrorCodeName();
+                if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
+                    // application has been removed from device -
+                    // unregister it
+                    tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = '' where register_id = ?"));
+                    tools.getPreparedStatement().setString(1, regId);
+                    tools.getPreparedStatement().executeUpdate();
+                } else {
+                    LOGGER.error("Error sending message to " + regId + ": " + error);
+                }
+            }
+        }
     }
 
     /**

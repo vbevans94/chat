@@ -55,7 +55,68 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java" line="34" class="chat.server.ChatHandler$1" package="chat.server">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java" line="2" class="ChatHandler.java" package="">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java" line="229" class="chat.server.ChatHandler$6" package="chat.server">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/com/google/android/gcm/server/Sender.java" line="442" class="com.google.android.gcm.server.Sender" package="com.google.android.gcm.server">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -65,28 +126,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ChatHandler.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ChatHandler.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="232" column="0" selection-start="13055" selection-end="13055" vertical-scroll-proportion="0.33169532" vertical-offset="3825" max-vertical-offset="4320">
+            <state line="229" column="0" selection-start="13443" selection-end="13443" vertical-scroll-proportion="0.0" vertical-offset="3786" max-vertical-offset="5796">
               <folding>
-                <element signature="e#602#2145#0" expanded="true" />
-                <element signature="e#2134#2135#0" expanded="true" />
-                <element signature="e#2277#3246#0" expanded="true" />
-                <element signature="e#3235#3236#0" expanded="true" />
-                <element signature="e#3416#4390#0" expanded="true" />
-                <element signature="e#3933#3939#0" expanded="true" />
-                <element signature="e#4379#4380#0" expanded="true" />
-                <element signature="e#4561#9579#0" expanded="true" />
-                <element signature="e#7730#7738#0" expanded="true" />
-                <element signature="e#9568#9569#0" expanded="true" />
-                <element signature="e#9772#11282#0" expanded="true" />
-                <element signature="e#10637#10646#0" expanded="true" />
-                <element signature="e#11271#11272#0" expanded="true" />
-                <element signature="e#11476#12491#0" expanded="true" />
-                <element signature="e#12480#12481#0" expanded="true" />
-                <element signature="e#12765#13757#0" expanded="true" />
-                <element signature="e#13746#13747#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1117#3116#0" expanded="true" />
+                <element signature="e#3105#3106#0" expanded="true" />
+                <element signature="e#13251#15129#0" expanded="true" />
+                <element signature="e#14502#14510#0" expanded="true" />
+                <element signature="e#15118#15119#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,7 +145,7 @@
       <file leaf-file-name="Chat.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="597" column="0" selection-start="25981" selection-end="25981" vertical-scroll-proportion="0.0" vertical-offset="10104" max-vertical-offset="111546">
+            <state line="615" column="0" selection-start="26646" selection-end="26646" vertical-scroll-proportion="0.0" vertical-offset="11070" max-vertical-offset="118404">
               <folding />
             </state>
           </provider>
@@ -104,9 +154,25 @@
       <file leaf-file-name="DB.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="0" selection-start="1440" selection-end="1440" vertical-scroll-proportion="0.0" vertical-offset="668" max-vertical-offset="1080">
+            <state line="48" column="0" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.0" vertical-offset="653" max-vertical-offset="1026">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sender.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/google/android/gcm/server/Sender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="451" column="59" selection-start="19981" selection-end="19981" vertical-scroll-proportion="0.76675606" vertical-offset="7832" max-vertical-offset="11592">
               <folding>
+                <element signature="e#0#26109#0" expanded="true" />
                 <element signature="imports" expanded="true" />
+                <element signature="e#11533#11549#0" expanded="true" />
+                <element signature="e#11602#11610#0" expanded="true" />
+                <element signature="e#11693#11699#0" expanded="true" />
+                <element signature="e#15213#15221#0" expanded="true" />
+                <element signature="e#19102#19132#1" expanded="true" />
+                <element signature="e#23331#23347#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -168,6 +234,7 @@
         <option value="$PROJECT_DIR$/src/chat/server/db/Tools.java" />
         <option value="$PROJECT_DIR$/src/chat/server/db/DB.java" />
         <option value="$PROJECT_DIR$/src/chat/server/ChatHandler.java" />
+        <option value="$PROJECT_DIR$/src/com/google/android/gcm/server/Sender.java" />
       </list>
     </option>
   </component>
@@ -203,7 +270,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -281,6 +347,7 @@
       <pane id="Scope">
         <subPane subId="Tests" />
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -298,7 +365,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/slf4j-simple-1.7.7.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/json.jar!/" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="options.lastSelected" value="preferences.keymap" />
@@ -488,7 +555,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -496,7 +563,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -506,8 +573,8 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24980783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32935917" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980783" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -571,25 +638,70 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="221" column="0" selection-start="12500" selection-end="12500" vertical-scroll-proportion="0.0" vertical-offset="3942" max-vertical-offset="3942">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1117#3116#0" expanded="true" />
+            <element signature="e#3105#3106#0" expanded="true" />
+            <element signature="e#13251#15129#0" expanded="true" />
+            <element signature="e#14502#14510#0" expanded="true" />
+            <element signature="e#15118#15119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="605" column="0" selection-start="26158" selection-end="26158" vertical-scroll-proportion="0.0" vertical-offset="10890" max-vertical-offset="114624">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="0" selection-start="1440" selection-end="1440" vertical-scroll-proportion="0.0" vertical-offset="668" max-vertical-offset="1080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="236" column="52" selection-start="13416" selection-end="13416" vertical-scroll-proportion="0.0" vertical-offset="4248" max-vertical-offset="4320">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1117#3116#0" expanded="true" />
+            <element signature="e#3105#3106#0" expanded="true" />
+            <element signature="e#13251#15129#0" expanded="true" />
+            <element signature="e#14502#14510#0" expanded="true" />
+            <element signature="e#15118#15119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="605" column="0" selection-start="26158" selection-end="26158" vertical-scroll-proportion="0.0" vertical-offset="10890" max-vertical-offset="114624">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="0" selection-start="1440" selection-end="1440" vertical-scroll-proportion="0.0" vertical-offset="668" max-vertical-offset="1080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="79" selection-start="1968" selection-end="1968" vertical-scroll-proportion="0.0" vertical-offset="666" max-vertical-offset="1260">
           <folding>
-            <element signature="e#602#2145#0" expanded="true" />
-            <element signature="e#2134#2135#0" expanded="true" />
-            <element signature="e#2277#3246#0" expanded="true" />
-            <element signature="e#3235#3236#0" expanded="true" />
-            <element signature="e#3416#4390#0" expanded="true" />
-            <element signature="e#3933#3939#0" expanded="true" />
-            <element signature="e#4379#4380#0" expanded="true" />
-            <element signature="e#4561#9579#0" expanded="true" />
-            <element signature="e#7730#7738#0" expanded="true" />
-            <element signature="e#9568#9569#0" expanded="true" />
-            <element signature="e#9772#11282#0" expanded="true" />
-            <element signature="e#10637#10646#0" expanded="true" />
-            <element signature="e#11271#11272#0" expanded="true" />
-            <element signature="e#11476#12491#0" expanded="true" />
-            <element signature="e#12480#12481#0" expanded="true" />
-            <element signature="e#12765#13757#0" expanded="true" />
-            <element signature="e#13746#13747#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1117#3116#0" expanded="true" />
+            <element signature="e#3105#3106#0" expanded="true" />
+            <element signature="e#13251#15129#0" expanded="true" />
+            <element signature="e#14502#14510#0" expanded="true" />
+            <element signature="e#15118#15119#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -604,9 +716,7 @@
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="33" column="0" selection-start="1119" selection-end="1119" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="1044">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -699,9 +809,7 @@
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="745" column="17" selection-start="33296" selection-end="33305" vertical-scroll-proportion="0.33277592" vertical-offset="12797" max-vertical-offset="18828">
-          <folding />
-        </state>
+        <state line="745" column="17" selection-start="33296" selection-end="33305" vertical-scroll-proportion="0.33277592" vertical-offset="12797" max-vertical-offset="18828" />
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/PreparedStatement.java">
@@ -713,16 +821,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/thrift/entity/ErrorType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="2" selection-start="326" selection-end="326" vertical-scroll-proportion="0.22464898" vertical-offset="0" max-vertical-offset="810">
-          <folding />
-        </state>
+        <state line="15" column="2" selection-start="326" selection-end="326" vertical-scroll-proportion="0.22464898" vertical-offset="0" max-vertical-offset="810" />
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/Date.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="152" column="18" selection-start="5003" selection-end="5003" vertical-scroll-proportion="0.24804991" vertical-offset="2163" max-vertical-offset="4194">
-          <folding />
-        </state>
+        <state line="152" column="18" selection-start="5003" selection-end="5003" vertical-scroll-proportion="0.24804991" vertical-offset="2163" max-vertical-offset="4194" />
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/util/Date.java">
@@ -739,9 +843,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/lang/Override.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="18" selection-start="971" selection-end="971" vertical-scroll-proportion="0.613941" vertical-offset="257" max-vertical-offset="630" />
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/javax/sql/DataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="82" column="13" selection-start="2807" selection-end="2807" vertical-scroll-proportion="0.4772118" vertical-offset="848" max-vertical-offset="1440" />
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/tomcat-jdbc-8.0.5-sources.jar!/org/apache/tomcat/jdbc/pool/DataSourceProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="39" selection-start="4007" selection-end="4007" vertical-scroll-proportion="0.18333334" vertical-offset="1554" max-vertical-offset="23778" />
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/ResultSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3258" column="54" selection-start="155614" selection-end="155614" vertical-scroll-proportion="0.53333336" vertical-offset="57984" max-vertical-offset="74142" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/mysql-connector-java-5.1.30-bin.jar!/com/mysql/jdbc/StatementImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="253" column="0" selection-start="12634" selection-end="12634" vertical-scroll-proportion="0.7522388" vertical-offset="4284" max-vertical-offset="4644" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/libthrift-0.9.1.jar!/org/apache/thrift/ProcessFunction.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="46" selection-start="273" selection-end="273" vertical-scroll-proportion="0.12303665" vertical-offset="61" max-vertical-offset="468" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/google/android/gcm/server/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="155" column="5" selection-start="4958" selection-end="4958" vertical-scroll-proportion="0.78571427" vertical-offset="2208" max-vertical-offset="3438">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/json.jar!/org/json/JSONObject.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="28" selection-start="6080" selection-end="6080" vertical-scroll-proportion="0.35340315" vertical-offset="2115" max-vertical-offset="2808">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/google/android/gcm/server/MulticastResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="37" selection-start="599" selection-end="628" vertical-scroll-proportion="0.048257373" vertical-offset="0" max-vertical-offset="2250">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/google/android/gcm/server/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="109" column="19" selection-start="2936" selection-end="2936" vertical-scroll-proportion="0.3324397" vertical-offset="1532" max-vertical-offset="3654">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/thrift/entity/Message.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="9" selection-start="5140" selection-end="5140" vertical-scroll-proportion="0.33280253" vertical-offset="1519" max-vertical-offset="9918">
+        <state line="132" column="9" selection-start="5166" selection-end="5166" vertical-scroll-proportion="0.33333334" vertical-offset="1662" max-vertical-offset="9918">
           <folding />
         </state>
       </provider>
@@ -753,78 +915,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="229" column="0" selection-start="13443" selection-end="13443" vertical-scroll-proportion="0.0" vertical-offset="3786" max-vertical-offset="5796">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1117#3116#0" expanded="true" />
+            <element signature="e#3105#3106#0" expanded="true" />
+            <element signature="e#13251#15129#0" expanded="true" />
+            <element signature="e#14502#14510#0" expanded="true" />
+            <element signature="e#15118#15119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/thrift/entity/Chat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="597" column="0" selection-start="25981" selection-end="25981" vertical-scroll-proportion="0.0" vertical-offset="10104" max-vertical-offset="111546">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/lang/Override.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="18" selection-start="971" selection-end="971" vertical-scroll-proportion="0.613941" vertical-offset="257" max-vertical-offset="630">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/javax/sql/DataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="13" selection-start="2807" selection-end="2807" vertical-scroll-proportion="0.4772118" vertical-offset="848" max-vertical-offset="1440">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/tomcat-jdbc-8.0.5-sources.jar!/org/apache/tomcat/jdbc/pool/DataSourceProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="39" selection-start="4007" selection-end="4007" vertical-scroll-proportion="0.18333334" vertical-offset="1554" max-vertical-offset="23778">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/ResultSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3258" column="54" selection-start="155614" selection-end="155614" vertical-scroll-proportion="0.53333336" vertical-offset="57984" max-vertical-offset="74142">
+        <state line="615" column="0" selection-start="26646" selection-end="26646" vertical-scroll-proportion="0.0" vertical-offset="11070" max-vertical-offset="118404">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="0" selection-start="1440" selection-end="1440" vertical-scroll-proportion="0.0" vertical-offset="668" max-vertical-offset="1080">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/mysql-connector-java-5.1.30-bin.jar!/com/mysql/jdbc/StatementImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="253" column="0" selection-start="12634" selection-end="12634" vertical-scroll-proportion="0.7522388" vertical-offset="4284" max-vertical-offset="4644">
+        <state line="48" column="0" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.0" vertical-offset="653" max-vertical-offset="1026">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/com/google/android/gcm/server/Sender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="232" column="0" selection-start="13055" selection-end="13055" vertical-scroll-proportion="0.33169532" vertical-offset="3825" max-vertical-offset="4320">
+        <state line="451" column="59" selection-start="19981" selection-end="19981" vertical-scroll-proportion="0.76675606" vertical-offset="7832" max-vertical-offset="11592">
           <folding>
-            <element signature="e#602#2145#0" expanded="true" />
-            <element signature="e#2134#2135#0" expanded="true" />
-            <element signature="e#2277#3246#0" expanded="true" />
-            <element signature="e#3235#3236#0" expanded="true" />
-            <element signature="e#3416#4390#0" expanded="true" />
-            <element signature="e#3933#3939#0" expanded="true" />
-            <element signature="e#4379#4380#0" expanded="true" />
-            <element signature="e#4561#9579#0" expanded="true" />
-            <element signature="e#7730#7738#0" expanded="true" />
-            <element signature="e#9568#9569#0" expanded="true" />
-            <element signature="e#9772#11282#0" expanded="true" />
-            <element signature="e#10637#10646#0" expanded="true" />
-            <element signature="e#11271#11272#0" expanded="true" />
-            <element signature="e#11476#12491#0" expanded="true" />
-            <element signature="e#12480#12481#0" expanded="true" />
-            <element signature="e#12765#13757#0" expanded="true" />
-            <element signature="e#13746#13747#0" expanded="true" />
+            <element signature="e#0#26109#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#11533#11549#0" expanded="true" />
+            <element signature="e#11602#11610#0" expanded="true" />
+            <element signature="e#11693#11699#0" expanded="true" />
+            <element signature="e#15213#15221#0" expanded="true" />
+            <element signature="e#19102#19132#1" expanded="true" />
+            <element signature="e#23331#23347#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -881,7 +1011,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Lab8a</last-edited>
+          <last-edited>chat</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -906,7 +1036,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>slf4j-api-1.7.7</last-edited>
+          <last-edited>json</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

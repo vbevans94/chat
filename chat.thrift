@@ -44,14 +44,14 @@ service Chat
    * @return newly created user id
    * @throws ChatException when there were validation errors or such user already exists
    */
-  i32 registerUser(1: User user) throws (1: ChatException error),
+  i32 registerUser(1: User user, 2: string gcmId) throws (1: ChatException error),
 
   /**
    * Logs user in the system.
    * @return user id
    * @throws ChatException when there were validation errors or no such user
    */
-  i32 loginUser(1: User user) throws (1: ChatException error),
+  i32 loginUser(1: User user, 2: string gcmId) throws (1: ChatException error),
 
   /**
    * Retrieves all users currently registered in the system.

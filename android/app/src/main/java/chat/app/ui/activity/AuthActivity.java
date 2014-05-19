@@ -11,8 +11,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import chat.app.R;
+import chat.app.manager.ExpotentialBackoffTask;
 import chat.app.manager.RemoteManager;
 import chat.app.manager.UserManager;
+import chat.app.manager.gcm.GcmManager;
 import chat.app.manager.utils.TaskUtils;
 import thrift.entity.Chat;
 import thrift.entity.ChatException;
@@ -76,7 +78,7 @@ public class AuthActivity extends BaseActivity {
         }
     }
 
-    private static class RegisterTask extends TaskUtils.BaseTask<Credentials, Void, Void> {
+    private static class RegisterTask extends ExpotentialBackoffTask<Credentials, Void, Void> {
 
         private ChatException mError;
 
@@ -90,13 +92,18 @@ public class AuthActivity extends BaseActivity {
          * @return null if registration succeeded and string error message otherwise
          */
         @Override
-        protected Void doInBackground(Credentials... params) {
+        public Void doWork(Credentials... params) throws Exception {
             try {
                 if (getActivity() == null) {
                     return null;
                 }
                 User user = params[0].toUser();
-                user.setId(makeAuthCall(user));
+                String registerId = GcmManager.INSTANCE.getSavedGsmId();
+                if (registerId.isEmpty()) {
+                    registerId = GcmManager.INSTANCE.getGcmId();
+                }
+                user.setId(makeAuthCall(user, registerId));
+                GcmManager.INSTANCE.saveGcmId(registerId);
                 UserManager.INSTANCE.saveUser(user);
             } catch (ChatException e) {
                 mError = e;
@@ -104,11 +111,11 @@ public class AuthActivity extends BaseActivity {
             return null;
         }
 
-        int makeAuthCall(final User user) throws ChatException{
+        int makeAuthCall(final User user, final String registerId) throws ChatException {
             return RemoteManager.INSTANCE.perform(getActivity(), new RemoteManager.RemoteCall<Integer>() {
                 @Override
                 public Integer call(Chat.Client client) throws TException {
-                    return client.registerUser(user);
+                    return client.registerUser(user, registerId);
                 }
             });
         }
@@ -131,11 +138,11 @@ public class AuthActivity extends BaseActivity {
         }
 
         @Override
-        int makeAuthCall(final User user) throws ChatException {
+        int makeAuthCall(final User user, final String registerId) throws ChatException {
             return RemoteManager.INSTANCE.perform(getActivity(), new RemoteManager.RemoteCall<Integer>() {
                 @Override
                 public Integer call(Chat.Client client) throws TException {
-                    return client.loginUser(user);
+                    return client.loginUser(user, registerId);
                 }
             });
         }

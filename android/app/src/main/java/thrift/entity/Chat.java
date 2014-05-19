@@ -45,8 +45,9 @@ public class Chat {
      * @throws ChatException when there were validation errors or such user already exists
      * 
      * @param user
+     * @param gcmId
      */
-    public int registerUser(User user) throws ChatException, org.apache.thrift.TException;
+    public int registerUser(User user, String gcmId) throws ChatException, org.apache.thrift.TException;
 
     /**
      * Logs user in the system.
@@ -54,8 +55,9 @@ public class Chat {
      * @throws ChatException when there were validation errors or no such user
      * 
      * @param user
+     * @param gcmId
      */
-    public int loginUser(User user) throws ChatException, org.apache.thrift.TException;
+    public int loginUser(User user, String gcmId) throws ChatException, org.apache.thrift.TException;
 
     /**
      * Retrieves all users currently registered in the system.
@@ -99,9 +101,9 @@ public class Chat {
 
   public interface AsyncIface {
 
-    public void registerUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void registerUser(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void loginUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void loginUser(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void getAllUsers(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -133,16 +135,17 @@ public class Chat {
       super(iprot, oprot);
     }
 
-    public int registerUser(User user) throws ChatException, org.apache.thrift.TException
+    public int registerUser(User user, String gcmId) throws ChatException, org.apache.thrift.TException
     {
-      send_registerUser(user);
+      send_registerUser(user, gcmId);
       return recv_registerUser();
     }
 
-    public void send_registerUser(User user) throws org.apache.thrift.TException
+    public void send_registerUser(User user, String gcmId) throws org.apache.thrift.TException
     {
       registerUser_args args = new registerUser_args();
       args.setUser(user);
+      args.setGcmId(gcmId);
       sendBase("registerUser", args);
     }
 
@@ -159,16 +162,17 @@ public class Chat {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "registerUser failed: unknown result");
     }
 
-    public int loginUser(User user) throws ChatException, org.apache.thrift.TException
+    public int loginUser(User user, String gcmId) throws ChatException, org.apache.thrift.TException
     {
-      send_loginUser(user);
+      send_loginUser(user, gcmId);
       return recv_loginUser();
     }
 
-    public void send_loginUser(User user) throws org.apache.thrift.TException
+    public void send_loginUser(User user, String gcmId) throws org.apache.thrift.TException
     {
       loginUser_args args = new loginUser_args();
       args.setUser(user);
+      args.setGcmId(gcmId);
       sendBase("loginUser", args);
     }
 
@@ -309,24 +313,27 @@ public class Chat {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void registerUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void registerUser(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      registerUser_call method_call = new registerUser_call(user, resultHandler, this, ___protocolFactory, ___transport);
+      registerUser_call method_call = new registerUser_call(user, gcmId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class registerUser_call extends org.apache.thrift.async.TAsyncMethodCall {
       private User user;
-      public registerUser_call(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String gcmId;
+      public registerUser_call(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.user = user;
+        this.gcmId = gcmId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("registerUser", org.apache.thrift.protocol.TMessageType.CALL, 0));
         registerUser_args args = new registerUser_args();
         args.setUser(user);
+        args.setGcmId(gcmId);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -341,24 +348,27 @@ public class Chat {
       }
     }
 
-    public void loginUser(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void loginUser(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      loginUser_call method_call = new loginUser_call(user, resultHandler, this, ___protocolFactory, ___transport);
+      loginUser_call method_call = new loginUser_call(user, gcmId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class loginUser_call extends org.apache.thrift.async.TAsyncMethodCall {
       private User user;
-      public loginUser_call(User user, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String gcmId;
+      public loginUser_call(User user, String gcmId, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.user = user;
+        this.gcmId = gcmId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("loginUser", org.apache.thrift.protocol.TMessageType.CALL, 0));
         loginUser_args args = new loginUser_args();
         args.setUser(user);
+        args.setGcmId(gcmId);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -545,7 +555,7 @@ public class Chat {
       public registerUser_result getResult(I iface, registerUser_args args) throws org.apache.thrift.TException {
         registerUser_result result = new registerUser_result();
         try {
-          result.success = iface.registerUser(args.user);
+          result.success = iface.registerUser(args.user, args.gcmId);
           result.setSuccessIsSet(true);
         } catch (ChatException error) {
           result.error = error;
@@ -570,7 +580,7 @@ public class Chat {
       public loginUser_result getResult(I iface, loginUser_args args) throws org.apache.thrift.TException {
         loginUser_result result = new loginUser_result();
         try {
-          result.success = iface.loginUser(args.user);
+          result.success = iface.loginUser(args.user, args.gcmId);
           result.setSuccessIsSet(true);
         } catch (ChatException error) {
           result.error = error;
@@ -751,7 +761,7 @@ public class Chat {
       }
 
       public void start(I iface, registerUser_args args, org.apache.thrift.async.AsyncMethodCallback<Integer> resultHandler) throws TException {
-        iface.registerUser(args.user,resultHandler);
+        iface.registerUser(args.user, args.gcmId,resultHandler);
       }
     }
 
@@ -809,7 +819,7 @@ public class Chat {
       }
 
       public void start(I iface, loginUser_args args, org.apache.thrift.async.AsyncMethodCallback<Integer> resultHandler) throws TException {
-        iface.loginUser(args.user,resultHandler);
+        iface.loginUser(args.user, args.gcmId,resultHandler);
       }
     }
 
@@ -1047,6 +1057,7 @@ public class Chat {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("registerUser_args");
 
     private static final org.apache.thrift.protocol.TField USER_FIELD_DESC = new org.apache.thrift.protocol.TField("user", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField GCM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("gcmId", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1055,10 +1066,12 @@ public class Chat {
     }
 
     public User user; // required
+    public String gcmId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      USER((short)1, "user");
+      USER((short)1, "user"),
+      GCM_ID((short)2, "gcmId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1075,6 +1088,8 @@ public class Chat {
         switch(fieldId) {
           case 1: // USER
             return USER;
+          case 2: // GCM_ID
+            return GCM_ID;
           default:
             return null;
         }
@@ -1120,6 +1135,8 @@ public class Chat {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.USER, new org.apache.thrift.meta_data.FieldMetaData("user", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
+      tmpMap.put(_Fields.GCM_ID, new org.apache.thrift.meta_data.FieldMetaData("gcmId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(registerUser_args.class, metaDataMap);
     }
@@ -1128,10 +1145,12 @@ public class Chat {
     }
 
     public registerUser_args(
-      User user)
+      User user,
+      String gcmId)
     {
       this();
       this.user = user;
+      this.gcmId = gcmId;
     }
 
     /**
@@ -1140,6 +1159,9 @@ public class Chat {
     public registerUser_args(registerUser_args other) {
       if (other.isSetUser()) {
         this.user = new User(other.user);
+      }
+      if (other.isSetGcmId()) {
+        this.gcmId = other.gcmId;
       }
     }
 
@@ -1150,6 +1172,7 @@ public class Chat {
     @Override
     public void clear() {
       this.user = null;
+      this.gcmId = null;
     }
 
     public User getUser() {
@@ -1176,6 +1199,30 @@ public class Chat {
       }
     }
 
+    public String getGcmId() {
+      return this.gcmId;
+    }
+
+    public registerUser_args setGcmId(String gcmId) {
+      this.gcmId = gcmId;
+      return this;
+    }
+
+    public void unsetGcmId() {
+      this.gcmId = null;
+    }
+
+    /** Returns true if field gcmId is set (has been assigned a value) and false otherwise */
+    public boolean isSetGcmId() {
+      return this.gcmId != null;
+    }
+
+    public void setGcmIdIsSet(boolean value) {
+      if (!value) {
+        this.gcmId = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case USER:
@@ -1186,6 +1233,14 @@ public class Chat {
         }
         break;
 
+      case GCM_ID:
+        if (value == null) {
+          unsetGcmId();
+        } else {
+          setGcmId((String)value);
+        }
+        break;
+
       }
     }
 
@@ -1193,6 +1248,9 @@ public class Chat {
       switch (field) {
       case USER:
         return getUser();
+
+      case GCM_ID:
+        return getGcmId();
 
       }
       throw new IllegalStateException();
@@ -1207,6 +1265,8 @@ public class Chat {
       switch (field) {
       case USER:
         return isSetUser();
+      case GCM_ID:
+        return isSetGcmId();
       }
       throw new IllegalStateException();
     }
@@ -1230,6 +1290,15 @@ public class Chat {
         if (!(this_present_user && that_present_user))
           return false;
         if (!this.user.equals(that.user))
+          return false;
+      }
+
+      boolean this_present_gcmId = true && this.isSetGcmId();
+      boolean that_present_gcmId = true && that.isSetGcmId();
+      if (this_present_gcmId || that_present_gcmId) {
+        if (!(this_present_gcmId && that_present_gcmId))
+          return false;
+        if (!this.gcmId.equals(that.gcmId))
           return false;
       }
 
@@ -1259,6 +1328,16 @@ public class Chat {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetGcmId()).compareTo(other.isSetGcmId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetGcmId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.gcmId, other.gcmId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -1284,6 +1363,14 @@ public class Chat {
         sb.append("null");
       } else {
         sb.append(this.user);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("gcmId:");
+      if (this.gcmId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.gcmId);
       }
       first = false;
       sb.append(")");
@@ -1341,6 +1428,14 @@ public class Chat {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // GCM_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.gcmId = iprot.readString();
+                struct.setGcmIdIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1359,6 +1454,11 @@ public class Chat {
         if (struct.user != null) {
           oprot.writeFieldBegin(USER_FIELD_DESC);
           struct.user.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.gcmId != null) {
+          oprot.writeFieldBegin(GCM_ID_FIELD_DESC);
+          oprot.writeString(struct.gcmId);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1382,20 +1482,30 @@ public class Chat {
         if (struct.isSetUser()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetGcmId()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetUser()) {
           struct.user.write(oprot);
+        }
+        if (struct.isSetGcmId()) {
+          oprot.writeString(struct.gcmId);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, registerUser_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.user = new User();
           struct.user.read(iprot);
           struct.setUserIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.gcmId = iprot.readString();
+          struct.setGcmIdIsSet(true);
         }
       }
     }
@@ -1862,6 +1972,7 @@ public class Chat {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("loginUser_args");
 
     private static final org.apache.thrift.protocol.TField USER_FIELD_DESC = new org.apache.thrift.protocol.TField("user", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField GCM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("gcmId", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1870,10 +1981,12 @@ public class Chat {
     }
 
     public User user; // required
+    public String gcmId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      USER((short)1, "user");
+      USER((short)1, "user"),
+      GCM_ID((short)2, "gcmId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1890,6 +2003,8 @@ public class Chat {
         switch(fieldId) {
           case 1: // USER
             return USER;
+          case 2: // GCM_ID
+            return GCM_ID;
           default:
             return null;
         }
@@ -1935,6 +2050,8 @@ public class Chat {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.USER, new org.apache.thrift.meta_data.FieldMetaData("user", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, User.class)));
+      tmpMap.put(_Fields.GCM_ID, new org.apache.thrift.meta_data.FieldMetaData("gcmId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(loginUser_args.class, metaDataMap);
     }
@@ -1943,10 +2060,12 @@ public class Chat {
     }
 
     public loginUser_args(
-      User user)
+      User user,
+      String gcmId)
     {
       this();
       this.user = user;
+      this.gcmId = gcmId;
     }
 
     /**
@@ -1955,6 +2074,9 @@ public class Chat {
     public loginUser_args(loginUser_args other) {
       if (other.isSetUser()) {
         this.user = new User(other.user);
+      }
+      if (other.isSetGcmId()) {
+        this.gcmId = other.gcmId;
       }
     }
 
@@ -1965,6 +2087,7 @@ public class Chat {
     @Override
     public void clear() {
       this.user = null;
+      this.gcmId = null;
     }
 
     public User getUser() {
@@ -1991,6 +2114,30 @@ public class Chat {
       }
     }
 
+    public String getGcmId() {
+      return this.gcmId;
+    }
+
+    public loginUser_args setGcmId(String gcmId) {
+      this.gcmId = gcmId;
+      return this;
+    }
+
+    public void unsetGcmId() {
+      this.gcmId = null;
+    }
+
+    /** Returns true if field gcmId is set (has been assigned a value) and false otherwise */
+    public boolean isSetGcmId() {
+      return this.gcmId != null;
+    }
+
+    public void setGcmIdIsSet(boolean value) {
+      if (!value) {
+        this.gcmId = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case USER:
@@ -2001,6 +2148,14 @@ public class Chat {
         }
         break;
 
+      case GCM_ID:
+        if (value == null) {
+          unsetGcmId();
+        } else {
+          setGcmId((String)value);
+        }
+        break;
+
       }
     }
 
@@ -2008,6 +2163,9 @@ public class Chat {
       switch (field) {
       case USER:
         return getUser();
+
+      case GCM_ID:
+        return getGcmId();
 
       }
       throw new IllegalStateException();
@@ -2022,6 +2180,8 @@ public class Chat {
       switch (field) {
       case USER:
         return isSetUser();
+      case GCM_ID:
+        return isSetGcmId();
       }
       throw new IllegalStateException();
     }
@@ -2045,6 +2205,15 @@ public class Chat {
         if (!(this_present_user && that_present_user))
           return false;
         if (!this.user.equals(that.user))
+          return false;
+      }
+
+      boolean this_present_gcmId = true && this.isSetGcmId();
+      boolean that_present_gcmId = true && that.isSetGcmId();
+      if (this_present_gcmId || that_present_gcmId) {
+        if (!(this_present_gcmId && that_present_gcmId))
+          return false;
+        if (!this.gcmId.equals(that.gcmId))
           return false;
       }
 
@@ -2074,6 +2243,16 @@ public class Chat {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetGcmId()).compareTo(other.isSetGcmId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetGcmId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.gcmId, other.gcmId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -2099,6 +2278,14 @@ public class Chat {
         sb.append("null");
       } else {
         sb.append(this.user);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("gcmId:");
+      if (this.gcmId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.gcmId);
       }
       first = false;
       sb.append(")");
@@ -2156,6 +2343,14 @@ public class Chat {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // GCM_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.gcmId = iprot.readString();
+                struct.setGcmIdIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -2174,6 +2369,11 @@ public class Chat {
         if (struct.user != null) {
           oprot.writeFieldBegin(USER_FIELD_DESC);
           struct.user.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.gcmId != null) {
+          oprot.writeFieldBegin(GCM_ID_FIELD_DESC);
+          oprot.writeString(struct.gcmId);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2197,20 +2397,30 @@ public class Chat {
         if (struct.isSetUser()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetGcmId()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetUser()) {
           struct.user.write(oprot);
+        }
+        if (struct.isSetGcmId()) {
+          oprot.writeString(struct.gcmId);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, loginUser_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.user = new User();
           struct.user.read(iprot);
           struct.setUserIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.gcmId = iprot.readString();
+          struct.setGcmIdIsSet(true);
         }
       }
     }
