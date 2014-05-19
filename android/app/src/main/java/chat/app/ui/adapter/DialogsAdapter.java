@@ -9,13 +9,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import butterknife.InjectView;
+import chat.app.R;
 import chat.app.ui.tools.BaseHolder;
 import thrift.entity.Dialog;
 
 public class DialogsAdapter extends ArrayAdapter<Dialog> {
 
     public DialogsAdapter(Context context, List<Dialog> dialogs) {
-        super(context, android.R.layout.simple_list_item_2, dialogs);
+        super(context, R.layout.item_dialog, dialogs);
     }
 
     @Override
@@ -24,23 +25,23 @@ public class DialogsAdapter extends ArrayAdapter<Dialog> {
         if (view != null) {
             holder = (ViewHolder) view.getTag();
         } else {
-            view = View.inflate(getContext(), android.R.layout.simple_list_item_2, null);
+            view = View.inflate(getContext(), R.layout.item_dialog, null);
             holder = new ViewHolder(view);
         }
         Dialog dialog = getItem(position);
-        holder.textView1.setText(dialog.getPartner().getUsername());
-        holder.textView2.setText(dialog.getLastMessage().getData());
+        holder.textPartner.setText(dialog.getPartner().getUsername());
+        holder.textLastMessage.setText(dialog.getLastMessage().getData());
 
         return view;
     }
 
     static class ViewHolder extends BaseHolder {
 
-        @InjectView(android.R.id.text1)
-        TextView textView1;
+        @InjectView(R.id.text_partner)
+        TextView textPartner;
 
-        @InjectView(android.R.id.text2)
-        TextView textView2;
+        @InjectView(R.id.text_last_message)
+        TextView textLastMessage;
 
         ViewHolder(View view) {
             super(view);

@@ -101,25 +101,27 @@ public class ChatHandler implements Chat.Iface {
             @Override
             public List<Dialog> query(Tools tools) throws SQLException, ChatException {
                 // get all users except me
-                String sql = "select ltm.created_at, ltm.data, ltm.author_id as partner_id, lfm.username, " +
-                        "lfm.created_at, lfm.data from ((select m.created_at, m.data, m.author_id, m.receiver_id " +
-                        "from messages m inner join (select author_id, max(created_at) as max_created_at from " +
-                        "messages where receiver_id = ? group by author_id) last on (m.author_id = last.author_id) " +
-                        "and m.created_at = last.max_created_at) ltm left join (select m.created_at, m.data, " +
-                        "m.author_id, m.receiver_id, last.username as username from messages m inner join (select " +
-                        "receiver_id, max(created_at) as max_created_at, users.username as username from messages, " +
-                        "users where users.id = receiver_id and author_id = ? group by receiver_id) last on " +
-                        "(m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) lfm on " +
-                        "ltm.author_id = lfm.receiver_id) union (select ltm.created_at, ltm.data, ltm.author_id as " +
-                        "partner_id, lfm.username, lfm.created_at, lfm.data from ((select m.created_at, m.data, " +
-                        "m.author_id, m.receiver_id from messages m inner join (select author_id, max(created_at) as " +
-                        "max_created_at from messages where receiver_id = ? group by author_id) last on (m.author_id = " +
-                        "last.author_id) and m.created_at = last.max_created_at) ltm right join (select m.created_at, " +
+                String sql = "select ltm.created_at, ltm.data, ltm.author_id, ltm.username, lfm.created_at, lfm.data, " +
+                        "lfm.receiver_id, lfm.username from ((select m.created_at, m.data, m.author_id, m.receiver_id, " +
+                        "last.username as username from messages m inner join (select author_id, max(created_at) as " +
+                        "max_created_at, users.username as username from messages, users where " +
+                        "users.id = messages.author_id and receiver_id = ? group by author_id) last on " +
+                        "(m.author_id = last.author_id) and m.created_at = last.max_created_at) ltm left join " +
+                        "(select m.created_at, m.data, m.author_id, m.receiver_id, last.username as username from " +
+                        "messages m inner join (select receiver_id, max(created_at) as max_created_at, users.username " +
+                        "as username from messages, users where users.id = receiver_id and author_id = ? group by " +
+                        "receiver_id) last on (m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) " +
+                        "lfm on ltm.author_id = lfm.receiver_id) union select ltm.created_at, ltm.data, ltm.author_id, " +
+                        "ltm.username, lfm.created_at, lfm.data, lfm.receiver_id, lfm.username from ((select m.created_at, " +
                         "m.data, m.author_id, m.receiver_id, last.username as username from messages m inner join " +
-                        "(select receiver_id, max(created_at) as max_created_at, users.username as username from " +
-                        "messages, users where users.id = receiver_id and author_id = ? group by receiver_id) last on " +
-                        "(m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) lfm on " +
-                        "ltm.author_id = lfm.receiver_id));";
+                        "(select author_id, max(created_at) as max_created_at, users.username as username from messages, " +
+                        "users where users.id = messages.author_id and receiver_id = ? group by author_id) last on " +
+                        "(m.author_id = last.author_id) and m.created_at = last.max_created_at) ltm right join " +
+                        "(select m.created_at, m.data, m.author_id, m.receiver_id, last.username as username from " +
+                        "messages m inner join (select receiver_id, max(created_at) as max_created_at, users.username " +
+                        "as username from messages, users where users.id = receiver_id and author_id = ? group by " +
+                        "receiver_id) last on (m.receiver_id = last.receiver_id) and m.created_at = last.max_created_at) " +
+                        "lfm on ltm.author_id = lfm.receiver_id);";
                 tools.setStatement(tools.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS));
                 tools.getPreparedStatement().setInt(1, user.getId());
                 tools.getPreparedStatement().setInt(2, user.getId());
@@ -131,18 +133,22 @@ public class ChatHandler implements Chat.Iface {
                     for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
                         Date ltmCreatedAt = tools.getResultSet().getDate(1);
                         String ltmData = tools.getResultSet().getString(2);
-                        int partnerId = tools.getResultSet().getInt(3);
-                        String partnerUsername = tools.getResultSet().getString(4);
+                        int ltmPartnerId = tools.getResultSet().getInt(3);
+                        String ltmPartnerUsername = tools.getResultSet().getString(4);
                         Date lfmCreatedAt = tools.getResultSet().getDate(5);
                         String lfmData = tools.getResultSet().getString(6);
+                        int lfmPartnerId = tools.getResultSet().getInt(7);
+                        String lfmPartnerUsername = tools.getResultSet().getString(8);
 
-                        User partner = new User(partnerId, partnerUsername, null);
+                        User partner;
                         Message lastMessage = new Message();
-                        if (ltmCreatedAt == null || lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
+                        if (ltmCreatedAt == null || lfmCreatedAt != null && lfmCreatedAt.compareTo(ltmCreatedAt) > 0) {
+                            partner = new User(lfmPartnerId, lfmPartnerUsername, null);
                             lastMessage.setData(lfmData);
                             lastMessage.setAuthor(user);
                             lastMessage.setCreatedAt(lfmCreatedAt.toString());
                         } else {
+                            partner = new User(ltmPartnerId, ltmPartnerUsername, null);
                             lastMessage.setData(ltmData);
                             lastMessage.setAuthor(partner);
                             lastMessage.setCreatedAt(ltmCreatedAt.toString());

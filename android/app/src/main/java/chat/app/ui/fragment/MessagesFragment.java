@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,13 +63,6 @@ public class MessagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ButterKnife.inject(this, view);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_refresh, menu);
-
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

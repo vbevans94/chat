@@ -317,15 +317,28 @@ public class DialogsDrawerFragment extends Fragment {
             if (fragment != null && fragment.isAdded()) {
                 if (dialogs != null) {
                     if (fragment.mUser != null) {
-                        dialogs.add(0, new Dialog(fragment.mUser, new Message()));
+                        boolean alreadyPresent = false;
+                        int position = 0;
+                        for (Dialog dialog : dialogs) {
+                            if (fragment.mUser.equals(dialog.getPartner())) {
+                                alreadyPresent = true;
+                                break;
+                            }
+                            position++;
+                        }
+                        if (!alreadyPresent) {
+                            // we add user if the dialog was started from bundle
+                            dialogs.add(0, new Dialog(fragment.mUser, new Message()));
+                        } else {
+                            fragment.mCurrentSelectedPosition = position;
+                        }
                     }
                     if (dialogs.size() == 0) {
                         // there are no dialogs yet, hence nothing to do here
                         fragment.mCallbacks.onNoDialogs();
                     } else {
                         fragment.mListDialogs.setAdapter(new DialogsAdapter(fragment.getActivity(), dialogs));
-                        fragment.mListDialogs.setItemChecked(fragment.mCurrentSelectedPosition, true);
-                        fragment.mDrawerLayout.openDrawer(fragment.mFragmentContainerView);
+                        fragment.selectItem(fragment.mCurrentSelectedPosition);
                     }
                 } else if (mError != null) {
                     Toast.makeText(fragment.getActivity(), mError.getMessage(), Toast.LENGTH_LONG).show();
