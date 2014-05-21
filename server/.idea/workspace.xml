@@ -55,23 +55,7 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java" line="2" class="ChatHandler.java" package="">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -84,13 +68,17 @@
       <file leaf-file-name="ChatHandler.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="228" column="56" selection-start="13514" selection-end="13514" vertical-scroll-proportion="4.5833335" vertical-offset="2184" max-vertical-offset="5742">
+            <state line="337" column="80" selection-start="19416" selection-end="19416" vertical-scroll-proportion="0.6" vertical-offset="5310" max-vertical-offset="6768">
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#9500#9508#0" expanded="true" />
-                <element signature="e#13266#15144#0" expanded="true" />
-                <element signature="e#14517#14525#0" expanded="true" />
-                <element signature="e#15133#15134#0" expanded="true" />
+                <element signature="e#9658#9666#0" expanded="true" />
+                <element signature="e#13093#13102#0" expanded="true" />
+                <element signature="e#14018#18252#0" expanded="true" />
+                <element signature="e#15256#15264#0" expanded="true" />
+                <element signature="e#17243#17251#0" expanded="true" />
+                <element signature="e#18241#18242#0" expanded="true" />
+                <element signature="e#18443#18451#0" expanded="true" />
+                <element signature="e#18492#18842#0" expanded="true" />
+                <element signature="e#18831#18832#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -505,7 +493,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -513,7 +501,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39940387" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -590,11 +578,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="229" column="0" selection-start="13443" selection-end="13443" vertical-scroll-proportion="0.0" vertical-offset="4122" max-vertical-offset="6066">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9500#9508#0" expanded="true" />
-            <element signature="e#13266#15144#0" expanded="true" />
-            <element signature="e#14517#14525#0" expanded="true" />
-            <element signature="e#15133#15134#0" expanded="true" />
+            <element signature="e#9658#9666#0" expanded="true" />
+            <element signature="e#13093#13102#0" expanded="true" />
+            <element signature="e#14018#18252#0" expanded="true" />
+            <element signature="e#15256#15264#0" expanded="true" />
+            <element signature="e#17243#17251#0" expanded="true" />
+            <element signature="e#18241#18242#0" expanded="true" />
+            <element signature="e#18443#18451#0" expanded="true" />
+            <element signature="e#18492#18842#0" expanded="true" />
+            <element signature="e#18831#18832#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -629,11 +621,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="221" column="0" selection-start="12500" selection-end="12500" vertical-scroll-proportion="0.0" vertical-offset="3942" max-vertical-offset="3942">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9500#9508#0" expanded="true" />
-            <element signature="e#13266#15144#0" expanded="true" />
-            <element signature="e#14517#14525#0" expanded="true" />
-            <element signature="e#15133#15134#0" expanded="true" />
+            <element signature="e#9658#9666#0" expanded="true" />
+            <element signature="e#13093#13102#0" expanded="true" />
+            <element signature="e#14018#18252#0" expanded="true" />
+            <element signature="e#15256#15264#0" expanded="true" />
+            <element signature="e#17243#17251#0" expanded="true" />
+            <element signature="e#18241#18242#0" expanded="true" />
+            <element signature="e#18443#18451#0" expanded="true" />
+            <element signature="e#18492#18842#0" expanded="true" />
+            <element signature="e#18831#18832#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -656,11 +652,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="236" column="52" selection-start="13416" selection-end="13416" vertical-scroll-proportion="0.0" vertical-offset="4248" max-vertical-offset="4320">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9500#9508#0" expanded="true" />
-            <element signature="e#13266#15144#0" expanded="true" />
-            <element signature="e#14517#14525#0" expanded="true" />
-            <element signature="e#15133#15134#0" expanded="true" />
+            <element signature="e#9658#9666#0" expanded="true" />
+            <element signature="e#13093#13102#0" expanded="true" />
+            <element signature="e#14018#18252#0" expanded="true" />
+            <element signature="e#15256#15264#0" expanded="true" />
+            <element signature="e#17243#17251#0" expanded="true" />
+            <element signature="e#18241#18242#0" expanded="true" />
+            <element signature="e#18443#18451#0" expanded="true" />
+            <element signature="e#18492#18842#0" expanded="true" />
+            <element signature="e#18831#18832#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -683,18 +683,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="79" selection-start="1968" selection-end="1968" vertical-scroll-proportion="0.0" vertical-offset="666" max-vertical-offset="1260">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9500#9508#0" expanded="true" />
-            <element signature="e#13266#15144#0" expanded="true" />
-            <element signature="e#14517#14525#0" expanded="true" />
-            <element signature="e#15133#15134#0" expanded="true" />
+            <element signature="e#9658#9666#0" expanded="true" />
+            <element signature="e#13093#13102#0" expanded="true" />
+            <element signature="e#14018#18252#0" expanded="true" />
+            <element signature="e#15256#15264#0" expanded="true" />
+            <element signature="e#17243#17251#0" expanded="true" />
+            <element signature="e#18241#18242#0" expanded="true" />
+            <element signature="e#18443#18451#0" expanded="true" />
+            <element signature="e#18492#18842#0" expanded="true" />
+            <element signature="e#18831#18832#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="16" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0" vertical-offset="252" max-vertical-offset="756" />
+        <state line="14" column="16" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0" vertical-offset="252" max-vertical-offset="756">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/DB.java">
@@ -706,7 +712,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="17" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="234" />
+        <state line="4" column="17" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="234">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/Tools.java">
@@ -770,7 +778,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="16" selection-start="417" selection-end="417" vertical-scroll-proportion="0.2866242" vertical-offset="0" max-vertical-offset="628" />
+        <state line="14" column="16" selection-start="417" selection-end="417" vertical-scroll-proportion="0.2866242" vertical-offset="0" max-vertical-offset="628">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/Tools.java">
@@ -782,19 +792,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/db/Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="17" selection-start="73" selection-end="73" vertical-scroll-proportion="0.11232449" vertical-offset="0" max-vertical-offset="641" />
+        <state line="4" column="17" selection-start="73" selection-end="73" vertical-scroll-proportion="0.11232449" vertical-offset="0" max-vertical-offset="641">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="745" column="17" selection-start="33296" selection-end="33305" vertical-scroll-proportion="0.33277592" vertical-offset="12797" max-vertical-offset="18828" />
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/PreparedStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="46" selection-start="1527" selection-end="1527" vertical-scroll-proportion="0.046178345" vertical-offset="583" max-vertical-offset="21654">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/thrift/entity/ErrorType.java">
@@ -915,15 +920,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/PreparedStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="51" selection-start="3443" selection-end="3443" vertical-scroll-proportion="0.09115282" vertical-offset="1244" max-vertical-offset="21654">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/sql/Types.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="234" column="59" selection-start="6654" selection-end="6654" vertical-scroll-proportion="0.6702413" vertical-offset="3548" max-vertical-offset="5346">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/chat/server/ChatHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="228" column="56" selection-start="13514" selection-end="13514" vertical-scroll-proportion="4.5833335" vertical-offset="2184" max-vertical-offset="5742">
+        <state line="337" column="80" selection-start="19416" selection-end="19416" vertical-scroll-proportion="0.6" vertical-offset="5310" max-vertical-offset="6768">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9500#9508#0" expanded="true" />
-            <element signature="e#13266#15144#0" expanded="true" />
-            <element signature="e#14517#14525#0" expanded="true" />
-            <element signature="e#15133#15134#0" expanded="true" />
+            <element signature="e#9658#9666#0" expanded="true" />
+            <element signature="e#13093#13102#0" expanded="true" />
+            <element signature="e#14018#18252#0" expanded="true" />
+            <element signature="e#15256#15264#0" expanded="true" />
+            <element signature="e#17243#17251#0" expanded="true" />
+            <element signature="e#18241#18242#0" expanded="true" />
+            <element signature="e#18443#18451#0" expanded="true" />
+            <element signature="e#18492#18842#0" expanded="true" />
+            <element signature="e#18831#18832#0" expanded="true" />
           </folding>
         </state>
       </provider>

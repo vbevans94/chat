@@ -14,6 +14,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import chat.app.R;
 import chat.app.manager.utils.BundleUtils;
+import chat.app.ui.activity.AllUsersActivity;
 import chat.app.ui.activity.DialogsActivity;
 import thrift.entity.Message;
 import thrift.entity.User;
@@ -24,6 +25,7 @@ public class GcmIntentService extends IntentService {
     public static final String KEY_AUTHOR_ID = "author_id";
     public static final String KEY_AUTHOR_USERNAME = "author_username";
     public static final String KEY_DATA = "data";
+    public static final String KEY_PUBLIC_MESSAGE = "public_message";
 
     public GcmIntentService() {
         super("ChatGcmIntentService");
@@ -57,12 +59,21 @@ public class GcmIntentService extends IntentService {
         NotificationManager notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this
-                , (int) System.currentTimeMillis()
-                , new Intent(this, DialogsActivity.class)
-                        .putExtras(msg)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                , 0);
+        PendingIntent contentIntent;
+        if (BundleUtils.contains(msg, KEY_PUBLIC_MESSAGE)) {
+            contentIntent = PendingIntent.getActivity(this
+                    , (int) System.currentTimeMillis()
+                    , new Intent(this, AllUsersActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    , 0);
+        } else {
+            contentIntent = PendingIntent.getActivity(this
+                    , (int) System.currentTimeMillis()
+                    , new Intent(this, DialogsActivity.class)
+                    .putExtras(msg)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    , 0);
+        }
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)

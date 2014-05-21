@@ -3,19 +3,19 @@ package chat.server;
 import chat.server.db.DB;
 import chat.server.db.Query;
 import chat.server.db.Tools;
-import com.google.android.gcm.server.Constants;
-import com.google.android.gcm.server.MulticastResult;
-import com.google.android.gcm.server.Result;
-import com.google.android.gcm.server.Sender;
+import com.google.android.gcm.server.*;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thrift.entity.*;
+import thrift.entity.Message;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ChatHandler implements Chat.Iface {
 
@@ -24,6 +24,9 @@ public class ChatHandler implements Chat.Iface {
     private static final String KEY_AUTHOR_USERNAME = "author_username";
     private static final String KEY_AUTHOR_ID = "author_id";
     private static final String API_KEY = "AIzaSyASbDTp4yHLeywWzC7uW2A2EY7OLI3yRvw";
+    private static final int MULTICAST_SIZE = 1000;
+    private static final Executor THREAD_POOL = Executors.newFixedThreadPool(5);
+    public static final String KEY_PUBLIC_MESSAGE = "public_message";
     private final Sender sender = new Sender(API_KEY);
 
     @Override
@@ -194,22 +197,29 @@ public class ChatHandler implements Chat.Iface {
         return DB.INSTANCE.run(new Query<List<Message>, ChatException>() {
             @Override
             public List<Message> query(Tools tools) throws SQLException, ChatException {
-                String sql = " select created_at, data, author_id from messages where receiver_id = ? and author_id = ? " +
-                        "or receiver_id = ? and author_id = ? order by created_at";
-                tools.setStatement(tools.getConnection().prepareStatement(sql));
-                tools.getPreparedStatement().setInt(1, user.getId());
-                tools.getPreparedStatement().setInt(2, partner.getId());
-                tools.getPreparedStatement().setInt(3, partner.getId());
-                tools.getPreparedStatement().setInt(4, user.getId());
+                if (partner != null) {
+                    String sql = "select created_at, data, author_id, users.username from messages, users where " +
+                            "users.id = messages.author_id and (receiver_id = ? and author_id = ? " +
+                            "or receiver_id = ? and author_id = ?) order by created_at";
+                    tools.setStatement(tools.getConnection().prepareStatement(sql));
+                    tools.getPreparedStatement().setInt(1, user.getId());
+                    tools.getPreparedStatement().setInt(2, partner.getId());
+                    tools.getPreparedStatement().setInt(3, partner.getId());
+                    tools.getPreparedStatement().setInt(4, user.getId());
+                } else {
+                    String sql = " select created_at, data, author_id, users.username from messages, users where " +
+                            "users.id = messages.author_id and isnull(receiver_id) order by created_at";
+                    tools.setStatement(tools.getConnection().prepareStatement(sql));
+                }
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 List<Message> messages = new ArrayList<Message>();
                 if (tools.getResultSet().first()) {
                     for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
-                        String createdAt = tools.getResultSet().getDate(1).toString();
+                        String createdAt = tools.getResultSet().getTimestamp(1).toString();
                         String data = tools.getResultSet().getString(2);
                         int authorId = tools.getResultSet().getInt(3);
-
-                        User author = authorId == user.getId() ? user : partner;
+                        String authorUsername = tools.getResultSet().getString(4);
+                        User author = new User(authorId, authorUsername, null);
                         messages.add(new Message(data, author, createdAt));
                     }
                 }
@@ -226,27 +236,71 @@ public class ChatHandler implements Chat.Iface {
             @Override
             public List<Message> query(Tools tools) throws SQLException, ChatException {
                 // inserting message
-                String sql = "insert into messages (author_id, receiver_id, data) values (?, ?, ?)";
-                tools.setStatement(tools.getConnection().prepareStatement(sql));
-                tools.getPreparedStatement().setInt(1, user.getId());
-                tools.getPreparedStatement().setInt(2, dialog.getPartner().getId());
-                tools.getPreparedStatement().setString(3, dialog.getLastMessage().getData());
+                if (dialog.getPartner() != null) {
+                    String sql = "insert into messages (author_id, receiver_id, data) values (?, ?, ?)";
+                    tools.setStatement(tools.getConnection().prepareStatement(sql));
+                    tools.getPreparedStatement().setInt(1, user.getId());
+                    tools.getPreparedStatement().setInt(2, dialog.getPartner().getId());
+                    tools.getPreparedStatement().setString(3, dialog.getLastMessage().getData());
+                } else {
+                    // public message
+                    String sql = "insert into messages (author_id, data) values (?, ?)";
+                    tools.setStatement(tools.getConnection().prepareStatement(sql));
+                    tools.getPreparedStatement().setInt(1, user.getId());
+                    tools.getPreparedStatement().setString(2, dialog.getLastMessage().getData());
+                }
                 tools.getPreparedStatement().executeUpdate();
 
-                // get partner's gcm id to notify him
-                tools.setStatement(tools.getConnection().prepareStatement("select register_id from users where id = ?"));
-                tools.getPreparedStatement().setInt(1, dialog.getPartner().getId());
-                tools.setResultSet(tools.getPreparedStatement().executeQuery());
-                String gcmId = "";
-                if (tools.getResultSet().first()) {
-                    gcmId = tools.getResultSet().getString(1);
+                List<String> receivers = new ArrayList<String>();
+                boolean publicMessage = false;
+                if (dialog.getPartner() != null) {
+                    // get partner's gcm id to notify him
+                    tools.setStatement(tools.getConnection().prepareStatement("select register_id from users where id = ?"));
+                    tools.getPreparedStatement().setInt(1, dialog.getPartner().getId());
+                    tools.setResultSet(tools.getPreparedStatement().executeQuery());
+                    String gcmId = "";
+                    if (tools.getResultSet().first()) {
+                        gcmId = tools.getResultSet().getString(1);
+                    }
+
+                    if (gcmId != null && !gcmId.isEmpty()) {
+                        receivers.add(gcmId);
+                    }
+                } else {
+                    // notify every body
+                    publicMessage = true;
+                    tools.setStatement(tools.getConnection().prepareStatement("select register_id from users"));
+                    tools.setResultSet(tools.getPreparedStatement().executeQuery());
+
+                    if (tools.getResultSet().first()) {
+                        for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
+                            String gcmId = tools.getResultSet().getString(1);
+                            if (gcmId != null && !gcmId.isEmpty()) {
+                                receivers.add(gcmId);
+                            }
+                        }
+                    }
                 }
 
-                List<String> receivers = new ArrayList<String>();
-                receivers.add(gcmId);
-                // for partner it's not the same as for me
-                Message message = new Message(dialog.getLastMessage().getData(), user, dialog.getLastMessage().getCreatedAt());
-                notifyReceivers(receivers, message, tools);
+                // for partners it's not the same as for me
+                User author = new User(user.getId(), user.getUsername(), null);
+                Message message = new Message(dialog.getLastMessage().getData(), author, dialog.getLastMessage().getCreatedAt());
+                // must split in chunks of 1000 devices (GCM limit)
+                int total = receivers.size();
+                List<String> partialReceivers = new ArrayList<String>(total);
+                int counter = 0;
+                int tasks = 0;
+                for (String receiver : receivers) {
+                    counter++;
+                    partialReceivers.add(receiver);
+                    int partialSize = partialReceivers.size();
+                    if (partialSize == MULTICAST_SIZE || counter == total) {
+                        asyncNotify(partialReceivers, message, tools, publicMessage);
+                        partialReceivers.clear();
+                        tasks++;
+                    }
+                }
+                LOGGER.info("Asynchronously sending " + tasks + " multi-cast messages to " + total + " devices");
 
                 try {
                     return getMessages(user, dialog.getPartner());
@@ -260,15 +314,32 @@ public class ChatHandler implements Chat.Iface {
         });
     }
 
-    private void notifyReceivers(List<String> receivers, Message msg, Tools tools) throws SQLException {
-        com.google.android.gcm.server.Message message = new com.google.android.gcm.server.Message.Builder()
+    private void asyncNotify(List<String> receivers, final Message msg, final Tools tools, final boolean publicMessage) {
+        final List<String> partialReceivers = new ArrayList<String>(receivers);
+        THREAD_POOL.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    notifyReceivers(partialReceivers, msg, tools, publicMessage);
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void notifyReceivers(List<String> receivers, Message msg, Tools tools, boolean publicMessage) throws SQLException {
+        com.google.android.gcm.server.Message.Builder builder = new com.google.android.gcm.server.Message.Builder()
                 .addData(KEY_DATA, msg.getData())
                 .addData(KEY_AUTHOR_USERNAME, msg.getAuthor().getUsername())
-                .addData(KEY_AUTHOR_ID, Integer.toString(msg.getAuthor().getId()))
-                .build();
+                .addData(KEY_AUTHOR_ID, Integer.toString(msg.getAuthor().getId()));
+        if (publicMessage) {
+            builder.addData(KEY_PUBLIC_MESSAGE, "1"); // just need to be present
+        }
         MulticastResult multicastResult;
         try {
-            multicastResult = sender.send(message, receivers, 5);
+            multicastResult = sender.send(builder.build(), receivers, 5);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             return;
@@ -307,6 +378,7 @@ public class ChatHandler implements Chat.Iface {
 
     /**
      * Validates user. If authentication fails exception is thrown.
+     *
      * @param user to validate
      * @throws ChatException when there is no such user
      */

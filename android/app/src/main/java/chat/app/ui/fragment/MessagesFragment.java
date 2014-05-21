@@ -82,6 +82,10 @@ public class MessagesFragment extends Fragment {
             User me = UserManager.INSTANCE.getSavedUser();
             String data = mEditMessage.getText().toString();
             Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
+            if (dialog == null) {
+                // public message
+                dialog = new Dialog();
+            }
             dialog.setLastMessage(new Message(data, me, null));
             TaskUtils.schedule(new SendMessageTask(this, me), dialog);
             mEditMessage.setText("");
@@ -95,7 +99,9 @@ public class MessagesFragment extends Fragment {
         super.onResume();
 
         Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());
-        getActivity().setTitle(dialog.getPartner().getUsername());
+        if (dialog != null) {
+            getActivity().setTitle(dialog.getPartner().getUsername());
+        }
         if (mListMessages.getAdapter() == null) {
             requestMessages(dialog);
         }
@@ -106,6 +112,10 @@ public class MessagesFragment extends Fragment {
      */
     private void requestMessages(Dialog dialog) {
         if (UserManager.INSTANCE.registered()) {
+            if (dialog == null) {
+                // we must get public messages
+                dialog = new Dialog();
+            }
             TaskUtils.schedule(new GetMessagesTask(this, UserManager.INSTANCE.getSavedUser()), dialog);
         }
     }
@@ -171,7 +181,7 @@ public class MessagesFragment extends Fragment {
             super.onPostExecute(messages);
 
             final MessagesFragment fragment = getFragment();
-            if (fragment != null) {
+            if (fragment != null && fragment.isAdded()) {
                 if (messages != null) {
                     fragment.mListMessages.setAdapter(new MessagesAdapter(fragment.getActivity(), messages, mUser));
                     fragment.scrollToBottom();

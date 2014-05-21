@@ -51,8 +51,9 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        boolean my = mMessages.get(position).getAuthor().equals(mMe);
-        return my ? MY_MESSAGE : HIS_MESSAGE;
+        return mMessages.get(position).getAuthor().getId() == mMe.getId()
+                ? MY_MESSAGE
+                 : HIS_MESSAGE;
     }
 
     @Override
