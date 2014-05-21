@@ -15,15 +15,18 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import chat.app.R;
 import chat.app.manager.utils.BundleUtils;
 import chat.app.ui.activity.DialogsActivity;
+import thrift.entity.Message;
 import thrift.entity.User;
 
 public class GcmIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
-    public static final String KEY_MESSAGE_AUTHOR = "message_author";
-    public static final String KEY_MESSAGE_DATA = "message_data";
+
+    public static final int NOTIFICATION_ID = 30194;
+    public static final String KEY_AUTHOR_ID = "author_id";
+    public static final String KEY_AUTHOR_USERNAME = "author_username";
+    public static final String KEY_DATA = "data";
 
     public GcmIntentService() {
-        super("ArtGcmIntentService");
+        super("ChatGcmIntentService");
     }
 
     public static final String TAG = GcmIntentService.class.getSimpleName();
@@ -54,20 +57,36 @@ public class GcmIntentService extends IntentService {
         NotificationManager notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, DialogsActivity.class)
-                        .putExtras(BundleUtils.writeToBundle(User.class, new User(0, msg.getString(KEY_MESSAGE_AUTHOR), null)))
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this
+                , (int) System.currentTimeMillis()
+                , new Intent(this, DialogsActivity.class)
+                        .putExtras(msg)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                , 0);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(getString(R.string.app_name))
+                        .setContentTitle(msg.getString(KEY_AUTHOR_USERNAME))
                         .setDefaults(Notification.DEFAULT_ALL)
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg.getString(KEY_MESSAGE_AUTHOR)))
-                        .setContentText(msg.getString(KEY_MESSAGE_DATA));
+                        .setContentText(msg.getString(KEY_DATA))
+                        .setAutoCancel(true);
 
         builder.setContentIntent(contentIntent);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    /**
+     * Retrieves message sent from user and dismisses the notification.
+     * @param extras to get from
+     * @return message object
+     */
+    public static Message getMessage(Bundle extras) {
+        // it's from the notification
+        int id = Integer.parseInt(BundleUtils.getString(extras, GcmIntentService.KEY_AUTHOR_ID));
+        String username = BundleUtils.getString(extras, GcmIntentService.KEY_AUTHOR_USERNAME);
+        String data = BundleUtils.getString(extras, GcmIntentService.KEY_DATA);
+        User user = new User(id, username, null);
+        return new Message(data, user, null);
     }
 }

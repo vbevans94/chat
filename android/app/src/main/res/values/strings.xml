@@ -28,5 +28,6 @@
     <string name="error_connection_failed">Connection failed</string>
     <string name="message_see_dialogs">See dialogs on the left drawer</string>
     <string name="title_me">Me</string>
+    <string name="message_last">%1$s: %2$s</string>
 
 </resources>

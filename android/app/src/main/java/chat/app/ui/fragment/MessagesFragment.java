@@ -110,6 +110,16 @@ public class MessagesFragment extends Fragment {
         }
     }
 
+    private void scrollToBottom() {
+        mListMessages.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                mListMessages.setSelection(mListMessages.getAdapter().getCount() - 1);
+            }
+        });
+    }
+
     private static class GetMessagesTask extends TaskUtils.BaseTask<Dialog, Void, List<Message>> {
 
         private final WeakReference<MessagesFragment> mFragmentRef;
@@ -164,6 +174,7 @@ public class MessagesFragment extends Fragment {
             if (fragment != null) {
                 if (messages != null) {
                     fragment.mListMessages.setAdapter(new MessagesAdapter(fragment.getActivity(), messages, mUser));
+                    fragment.scrollToBottom();
                 } else if (mError != null) {
                     Toast.makeText(fragment.getActivity(), mError.getMessage(), Toast.LENGTH_LONG).show();
                 }

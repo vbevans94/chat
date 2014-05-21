@@ -12,11 +12,15 @@ import butterknife.InjectView;
 import chat.app.R;
 import chat.app.ui.tools.BaseHolder;
 import thrift.entity.Dialog;
+import thrift.entity.User;
 
 public class DialogsAdapter extends ArrayAdapter<Dialog> {
 
-    public DialogsAdapter(Context context, List<Dialog> dialogs) {
+    private final User mMe;
+
+    public DialogsAdapter(Context context, List<Dialog> dialogs, User me) {
         super(context, R.layout.item_dialog, dialogs);
+        mMe = me;
     }
 
     @Override
@@ -30,7 +34,11 @@ public class DialogsAdapter extends ArrayAdapter<Dialog> {
         }
         Dialog dialog = getItem(position);
         holder.textPartner.setText(dialog.getPartner().getUsername());
-        holder.textLastMessage.setText(dialog.getLastMessage().getData());
+        String username = dialog.getLastMessage().getAuthor().getUsername();
+        if (username.equals(mMe.getUsername())) {
+            username = getContext().getString(R.string.title_me);
+        }
+        holder.textLastMessage.setText(getContext().getString(R.string.message_last, username, dialog.getLastMessage().getData()));
 
         return view;
     }

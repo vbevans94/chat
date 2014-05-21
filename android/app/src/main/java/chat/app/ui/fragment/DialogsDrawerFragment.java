@@ -29,6 +29,7 @@ import butterknife.OnItemClick;
 import chat.app.R;
 import chat.app.manager.RemoteManager;
 import chat.app.manager.UserManager;
+import chat.app.manager.gcm.GcmIntentService;
 import chat.app.manager.utils.BundleUtils;
 import chat.app.manager.utils.TaskUtils;
 import chat.app.ui.adapter.DialogsAdapter;
@@ -77,6 +78,7 @@ public class DialogsDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     private User mUser;
+    private Message mMessage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +127,7 @@ public class DialogsDrawerFragment extends Fragment {
         super.onResume();
 
         if (mListDialogs.getAdapter() == null) {
-            requestDialogs();
+            requestDialogs(true);
         }
     }
 
@@ -137,7 +139,14 @@ public class DialogsDrawerFragment extends Fragment {
      * @param extras The extras received in activity. Commonly here goes user to start dialog with.
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout, Bundle extras) {
-        mUser = BundleUtils.fetchFromBundle(User.class, extras);
+        if (BundleUtils.contains(extras, GcmIntentService.KEY_AUTHOR_ID)) {
+            mMessage = GcmIntentService.getMessage(extras);
+            mUser = mMessage.getAuthor();
+        } else {
+            // started new dialog
+            mUser = BundleUtils.fetchFromBundle(User.class, extras);
+            mMessage = new Message();
+        }
 
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
@@ -180,6 +189,8 @@ public class DialogsDrawerFragment extends Fragment {
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).commit();
                 }
+
+                requestDialogs(false);
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
@@ -246,13 +257,13 @@ public class DialogsDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
-            requestDialogs();
+            requestDialogs(true);
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    private void requestDialogs() {
-        TaskUtils.schedule(new GetDialogsTask(this), UserManager.INSTANCE.getSavedUser());
+    private void requestDialogs(boolean selectOnSuccess) {
+        TaskUtils.schedule(new GetDialogsTask(this, selectOnSuccess), UserManager.INSTANCE.getSavedUser());
     }
 
     private ActionBar getActionBar() {
@@ -277,11 +288,13 @@ public class DialogsDrawerFragment extends Fragment {
     private static class GetDialogsTask extends TaskUtils.BaseTask<User, Void, List<Dialog>> {
 
         private final WeakReference<DialogsDrawerFragment> mFragmentRef;
+        private final boolean mSelectOnSuccess;
         private ChatException mError;
 
-        public GetDialogsTask(DialogsDrawerFragment fragment) {
+        public GetDialogsTask(DialogsDrawerFragment fragment, boolean selectOnSuccess) {
             super((ActionBarActivity) fragment.getActivity());
             mFragmentRef = new WeakReference<DialogsDrawerFragment>(fragment);
+            mSelectOnSuccess = selectOnSuccess;
         }
 
         /**
@@ -320,7 +333,7 @@ public class DialogsDrawerFragment extends Fragment {
                         boolean alreadyPresent = false;
                         int position = 0;
                         for (Dialog dialog : dialogs) {
-                            if (fragment.mUser.getUsername().equals(dialog.getPartner().getUsername())) {
+                            if (fragment.mUser.equals(dialog.getPartner())) {
                                 alreadyPresent = true;
                                 break;
                             }
@@ -328,7 +341,7 @@ public class DialogsDrawerFragment extends Fragment {
                         }
                         if (!alreadyPresent) {
                             // we add user if the dialog was started from bundle
-                            dialogs.add(0, new Dialog(fragment.mUser, new Message()));
+                            dialogs.add(0, new Dialog(fragment.mUser, fragment.mMessage));
                         } else {
                             fragment.mCurrentSelectedPosition = position;
                         }
@@ -337,8 +350,12 @@ public class DialogsDrawerFragment extends Fragment {
                         // there are no dialogs yet, hence nothing to do here
                         fragment.mCallbacks.onNoDialogs();
                     } else {
-                        fragment.mListDialogs.setAdapter(new DialogsAdapter(fragment.getActivity(), dialogs));
-                        fragment.selectItem(fragment.mCurrentSelectedPosition);
+                        fragment.mListDialogs.setAdapter(new DialogsAdapter(fragment.getActivity(), dialogs, UserManager.INSTANCE.getSavedUser()));
+                        if (mSelectOnSuccess) {
+                            fragment.selectItem(fragment.mCurrentSelectedPosition);
+                        } else {
+                            fragment.mListDialogs.setItemChecked(fragment.mCurrentSelectedPosition, true);
+                        }
                     }
                 } else if (mError != null) {
                     Toast.makeText(fragment.getActivity(), mError.getMessage(), Toast.LENGTH_LONG).show();

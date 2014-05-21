@@ -13,17 +13,16 @@ import org.slf4j.LoggerFactory;
 import thrift.entity.*;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatHandler implements Chat.Iface {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ChatHandler.class);
-    private static final String MESSAGE_DATA = "message_data";
-    private static final String MESSAGE_AUTHOR = "message_author";
+    private static final String KEY_DATA = "data";
+    private static final String KEY_AUTHOR_USERNAME = "author_username";
+    private static final String KEY_AUTHOR_ID = "author_id";
     private static final String API_KEY = "AIzaSyASbDTp4yHLeywWzC7uW2A2EY7OLI3yRvw";
     private final Sender sender = new Sender(API_KEY);
 
@@ -157,11 +156,11 @@ public class ChatHandler implements Chat.Iface {
                 List<Dialog> dialogs = new ArrayList<Dialog>();
                 if (tools.getResultSet().first()) {
                     for (; !tools.getResultSet().isAfterLast(); tools.getResultSet().next()) {
-                        Date ltmCreatedAt = tools.getResultSet().getDate(1);
+                        Timestamp ltmCreatedAt = tools.getResultSet().getTimestamp(1);
                         String ltmData = tools.getResultSet().getString(2);
                         int ltmPartnerId = tools.getResultSet().getInt(3);
                         String ltmPartnerUsername = tools.getResultSet().getString(4);
-                        Date lfmCreatedAt = tools.getResultSet().getDate(5);
+                        Timestamp lfmCreatedAt = tools.getResultSet().getTimestamp(5);
                         String lfmData = tools.getResultSet().getString(6);
                         int lfmPartnerId = tools.getResultSet().getInt(7);
                         String lfmPartnerUsername = tools.getResultSet().getString(8);
@@ -263,8 +262,9 @@ public class ChatHandler implements Chat.Iface {
 
     private void notifyReceivers(List<String> receivers, Message msg, Tools tools) throws SQLException {
         com.google.android.gcm.server.Message message = new com.google.android.gcm.server.Message.Builder()
-                .addData(MESSAGE_DATA, msg.getData())
-                .addData(MESSAGE_AUTHOR, msg.getAuthor().getUsername())
+                .addData(KEY_DATA, msg.getData())
+                .addData(KEY_AUTHOR_USERNAME, msg.getAuthor().getUsername())
+                .addData(KEY_AUTHOR_ID, Integer.toString(msg.getAuthor().getId()))
                 .build();
         MulticastResult multicastResult;
         try {
