@@ -2,6 +2,7 @@ package chat.app.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +34,13 @@ public class AuthActivity extends BaseActivity {
         setContentView(R.layout.activity_auth);
 
         ButterKnife.inject(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @OnClick(R.id.button_register)

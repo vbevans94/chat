@@ -51,7 +51,7 @@ public class DialogsActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dialogs, menu);
+        getMenuInflater().inflate(R.menu.menu_all_users, menu);
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
         return super.onCreateOptionsMenu(menu);
     }

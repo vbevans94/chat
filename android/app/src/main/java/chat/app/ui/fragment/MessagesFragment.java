@@ -78,7 +78,7 @@ public class MessagesFragment extends Fragment {
     @OnClick(R.id.image_send)
     @SuppressWarnings("unused")
     void onSendClicked() {
-        if (!TextUtils.isEmpty(mEditMessage.getText())) {
+1        if (!TextUtils.isEmpty(mEditMessage.getText())) {
             User me = UserManager.INSTANCE.getSavedUser();
             String data = mEditMessage.getText().toString();
             Dialog dialog = BundleUtils.fetchFromBundle(Dialog.class, getArguments());

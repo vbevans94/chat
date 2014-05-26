@@ -20,6 +20,8 @@ public class AllUsersActivity extends BaseActivity implements AllUsersFragment.L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        getMenuInflater().inflate(R.menu.menu_sign_out, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 

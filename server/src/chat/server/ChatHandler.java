@@ -74,6 +74,8 @@ public class ChatHandler implements Chat.Iface {
                 tools.getPreparedStatement().setString(2, user.getPasshash());
                 tools.setResultSet(tools.getPreparedStatement().executeQuery());
                 if (tools.getResultSet().first()) {
+                    int userId = tools.getResultSet().getInt(1);
+
                     // get user with given register id and unset it to empty for him
                     tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = '' where register_id = ?"));
                     tools.getPreparedStatement().setString(1, registerId);
@@ -82,10 +84,10 @@ public class ChatHandler implements Chat.Iface {
                     // set register id for currently logged in user
                     tools.setStatement(tools.getConnection().prepareStatement("update users set register_id = ? where id = ?"));
                     tools.getPreparedStatement().setString(1, registerId);
-                    tools.getPreparedStatement().setInt(2, user.getId());
+                    tools.getPreparedStatement().setInt(2, userId);
                     tools.getPreparedStatement().executeUpdate();
 
-                    return tools.getResultSet().getInt(1);
+                    return userId;
                 } else {
                     // there is user
                     String error = String.format("Can't login %s: Wrong credentials.", user.getUsername());
@@ -375,6 +377,7 @@ public class ChatHandler implements Chat.Iface {
             }
         }
     }
+
 
     /**
      * Validates user. If authentication fails exception is thrown.

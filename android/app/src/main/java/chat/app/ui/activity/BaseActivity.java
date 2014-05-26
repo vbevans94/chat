@@ -3,7 +3,6 @@ package chat.app.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
@@ -21,13 +20,6 @@ public class BaseActivity extends ActionBarActivity {
         if (!UserManager.INSTANCE.registered() && !(this instanceof AuthActivity)) {
             startActivity(new Intent(this, AuthActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_global, menu);
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

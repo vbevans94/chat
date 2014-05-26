@@ -5,10 +5,4 @@
         android:icon="@drawable/ic_action_sign_out"
         android:title="@string/action_sign_out"
         app:showAsAction="ifRoom|withText" />
-
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom|withText" />
-
 </menu>
